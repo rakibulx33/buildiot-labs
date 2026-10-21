@@ -5,8 +5,6 @@ The website of BuildIoT Lab, an IoT and embedded product engineering team. Produ
 > **Engineering Ideas Into Reality.**
 > From Circuit to Cloud — Hardware, Firmware & Software Engineering.
 
-Brand spelling is deliberate: the company is **BuildIoT Lab** (singular), the domain is **buildiotlabs.com** (plural) and the contact email is **contact@buildiotlabs.com**. Do not write "BuildIoT Labs" as the company name. The full brand and scope rules are in [`docs/REQUIREMENTS.md`](docs/REQUIREMENTS.md) (developer handoff v1.1).
-
 ## What BuildIoT Lab does
 
 Five service families, all delivered remotely as designs, source files, documentation and advice:
