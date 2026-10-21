@@ -12,13 +12,13 @@ const archivo = localFont({
   declarations: [{ prop: "font-stretch", value: "62% 125%" }],
 });
 
+// Monospace for legends and codes only, so one weight and no preload.
 const b612 = localFont({
-  src: [
-    { path: "./fonts/b612-mono-400.woff2", weight: "400", style: "normal" },
-    { path: "./fonts/b612-mono-700.woff2", weight: "700", style: "normal" },
-  ],
+  src: "./fonts/b612-mono-400.woff2",
+  weight: "400",
   variable: "--font-b612",
   display: "swap",
+  preload: false,
 });
 
 export const metadata: Metadata = {
