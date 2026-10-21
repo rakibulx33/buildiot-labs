@@ -1,6 +1,6 @@
 # BuildIoT Lab website
 
-The website of BuildIoT Lab (singular "Lab"), an IoT and embedded product engineering team. Production domain: https://buildiotlabs.com (plural "labs"). Motto: Engineering Ideas Into Reality.
+The website of BuildIoT Lab, an IoT and embedded product engineering team. Production domain: https://buildiotlabs.com. Motto: Engineering Ideas Into Reality.
 
 The site is a lab bench. Pages are sheets of paper, reference designs are boards, tools are instruments, and every number carries a tag saying how it was obtained. The brand rules in `docs/REQUIREMENTS.md` (developer handoff v1.1) apply: name "BuildIoT Lab", email contact@buildiotlabs.com, remote-delivery services only, no location or retail marketing. Moving between sections sweeps the page across a soldermask stage; opening an object (a report, a board, a notebook page) morphs it into its own page.
 
