@@ -33,17 +33,11 @@ const ZOOM_MA_PER_DIV = 60;
 const ZOOM_DIVS_Y = 6;
 const OVERVIEW_MA_FULL = 400;
 
-/** 1-2-5 sequence, rounded up. */
-export function niceCeil(x: number): number {
-  const exp = Math.floor(Math.log10(x));
-  const base = 10 ** exp;
-  for (const m of [1, 2, 5, 10]) if (m * base >= x - 1e-9) return m * base;
-  return 10 * base;
-}
-
-export function overviewSecondsPerDiv(intervalSeconds: number): number {
-  return niceCeil(intervalSeconds * 0.32);
-}
+/**
+ * The overview keeps one fixed time base (one hour across the screen), so
+ * the density of pulses shows how often the node reports.
+ */
+const OVERVIEW_SECONDS_PER_DIV = 360;
 
 function fmtTime(seconds: number): string {
   if (seconds >= 60 && seconds % 60 === 0) return `${seconds / 60} min`;
@@ -126,7 +120,7 @@ export function drawScope(ctx: CanvasRenderingContext2D, f: ScopeFrame) {
   ctx.textBaseline = "alphabetic";
 
   // ---- Overview pane: several reports at a long time base ----
-  const secPerDiv = overviewSecondsPerDiv(f.intervalSeconds);
+  const secPerDiv = OVERVIEW_SECONDS_PER_DIV;
   const windowS = secPerDiv * 10;
   graticule(ctx, x, ovY, w, ovH, 2, c);
   ctx.fillStyle = c.text;

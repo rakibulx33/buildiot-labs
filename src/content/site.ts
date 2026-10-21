@@ -14,6 +14,14 @@ export function absoluteUrl(path = "/"): string {
   return `${siteUrl}${basePath}${path}`;
 }
 
+/** Social preview image, shared by pages that set their own Open Graph data. */
+export const ogImage = {
+  url: absoluteUrl("/og.png"),
+  width: 1200,
+  height: 630,
+  alt: "BuildIoT Labs: every microamp counted, every packet accounted for.",
+};
+
 export const site = {
   name: "BuildIoT Labs",
   url: siteUrl,

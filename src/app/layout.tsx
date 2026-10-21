@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { Header } from "@/components/site/Header";
-import { absoluteUrl, site } from "@/content/site";
+import { absoluteUrl, ogImage, site } from "@/content/site";
 import "./globals.css";
 
 const archivo = localFont({
@@ -34,8 +34,9 @@ export const metadata: Metadata = {
     siteName: site.name,
     locale: "en_US",
     url: absoluteUrl("/"),
+    images: [ogImage],
   },
-  twitter: { card: "summary_large_image" },
+  twitter: { card: "summary_large_image", images: [ogImage.url] },
 };
 
 export const viewport: Viewport = {

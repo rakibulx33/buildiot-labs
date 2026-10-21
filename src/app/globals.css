@@ -1313,9 +1313,9 @@ html[data-menu-open] {
     }
   }
   .report-stamp {
-    position: absolute;
-    top: 4.6rem;
-    right: 1.25rem;
+    position: relative;
+    display: inline-block;
+    margin: 1.25rem 0 0 1.25rem;
     padding: 0.3rem 0.65rem;
     border: 2px solid currentColor;
     outline: 1px solid currentColor;
@@ -1330,6 +1330,8 @@ html[data-menu-open] {
   }
   @media (min-width: 40rem) {
     .report-stamp {
+      position: absolute;
+      margin: 0;
       right: 2rem;
       top: 5rem;
     }
@@ -1562,6 +1564,705 @@ html[data-menu-open] {
   }
 }
 
+@layer components {
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.25rem;
+    padding: 0.35rem 0.85rem 0.35rem 0.7rem;
+    border-radius: 999px;
+    background: var(--color-sheet);
+    box-shadow: inset 0 0 0 1px var(--color-line);
+    font-size: 0.875rem;
+    font-weight: 560;
+    font-stretch: 104%;
+    transition:
+      box-shadow 160ms ease,
+      background-color 160ms ease;
+  }
+  .chip::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--color-gold);
+  }
+  .chip:hover {
+    box-shadow: inset 0 0 0 1.5px var(--color-ink);
+  }
+}
+
+@layer components {
+  .report-section {
+    margin-top: 3rem;
+  }
+  .report-h2 {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    font-size: clamp(1.3125rem, 1.15rem + 0.5vw, 1.5rem);
+    font-weight: 640;
+    font-stretch: 112%;
+    letter-spacing: -0.01em;
+  }
+  .report-num {
+    display: inline-grid;
+    place-items: center;
+    flex: none;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 999px;
+    box-shadow: inset 0 0 0 1.5px var(--color-ink);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    transform: translateY(-0.15em);
+  }
+}
+
+@layer components {
+  .data-table {
+    width: 100%;
+    min-width: 34rem;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+  }
+  .data-table th,
+  .data-table td {
+    padding: 0.8rem 1rem;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid var(--color-line-soft);
+  }
+  .data-table thead th {
+    padding-block: 0.7rem;
+    background: var(--color-sheet-2);
+    font-size: 0.75rem;
+    font-weight: 600;
+    font-stretch: 92%;
+    color: var(--color-ink-3);
+    border-bottom: 1px solid var(--color-line);
+  }
+  .data-table tbody th {
+    font-weight: 560;
+  }
+  .data-table tbody tr:last-child > * {
+    border-bottom: 0;
+  }
+  .data-table .text-right {
+    text-align: right;
+  }
+
+  .step-list {
+    counter-reset: step;
+    display: grid;
+    gap: 1rem;
+  }
+  .step-list li {
+    counter-increment: step;
+    position: relative;
+    padding-left: 2.75rem;
+    line-height: 1.6;
+  }
+  .step-list li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 999px;
+    background: var(--color-sheet);
+    box-shadow: inset 0 0 0 1.5px var(--color-ink);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-weight: 700;
+  }
+
+  .limit {
+    position: relative;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border-radius: 4px;
+    background: rgb(102 20 20 / 0.05);
+    box-shadow: inset 0 0 0 1px rgb(102 20 20 / 0.3);
+    color: var(--color-ink);
+  }
+  .limit::before {
+    content: "!";
+    position: absolute;
+    left: 0.85rem;
+    top: 0.75rem;
+    display: grid;
+    place-items: center;
+    width: 1.1rem;
+    height: 1.1rem;
+    border-radius: 999px;
+    background: var(--color-mask);
+    color: var(--color-silk);
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .board-note {
+    padding: 1.25rem;
+    border-radius: 10px;
+    background-color: var(--color-mask);
+    background-image:
+      linear-gradient(rgb(244 242 238 / 0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(244 242 238 / 0.055) 1px, transparent 1px);
+    background-size: 24px 24px;
+    box-shadow: var(--shadow-board);
+  }
+}
+
+/* ------------------------------------------------------------------
+   Lab note pages: a notebook sheet with a margin line, and prose.
+   ------------------------------------------------------------------ */
+@layer components {
+  .note-sheet {
+    position: relative;
+    padding: 1.5rem 1.25rem 2.5rem 2.75rem;
+    border-radius: 3px;
+    background-color: var(--color-sheet);
+    background-image: linear-gradient(
+      90deg,
+      transparent 1.75rem,
+      rgb(102 20 20 / 0.5) 1.75rem,
+      rgb(102 20 20 / 0.5) calc(1.75rem + 1.5px),
+      transparent calc(1.75rem + 1.5px)
+    );
+    box-shadow: var(--shadow-sheet);
+  }
+  @media (min-width: 40rem) {
+    .note-sheet {
+      padding: 2.5rem 3rem 3.5rem 5.5rem;
+      background-image: linear-gradient(
+        90deg,
+        transparent 3.5rem,
+        rgb(102 20 20 / 0.5) 3.5rem,
+        rgb(102 20 20 / 0.5) calc(3.5rem + 1.5px),
+        transparent calc(3.5rem + 1.5px)
+      );
+    }
+  }
+
+  .lab-prose {
+    max-width: 42rem;
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: var(--color-ink);
+  }
+  .lab-prose > * + * {
+    margin-top: 1.25em;
+  }
+  .lab-prose h2 {
+    margin-top: 2.4em;
+    font-size: 1.5rem;
+    font-weight: 640;
+    font-stretch: 112%;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+  .lab-prose h3 {
+    margin-top: 2em;
+    font-size: 1.125rem;
+    font-weight: 640;
+    font-stretch: 106%;
+  }
+  .lab-prose h2 + *,
+  .lab-prose h3 + * {
+    margin-top: 0.75em;
+  }
+  .lab-prose ul,
+  .lab-prose ol {
+    display: grid;
+    gap: 0.5em;
+    padding-left: 1.35em;
+  }
+  .lab-prose ul {
+    list-style: disc;
+  }
+  .lab-prose ol {
+    list-style: decimal;
+  }
+  .lab-prose li::marker {
+    color: var(--color-mask);
+  }
+  .lab-prose strong {
+    font-weight: 640;
+  }
+  .lab-prose code {
+    padding: 0.1em 0.35em;
+    border-radius: 3px;
+    background: var(--color-sheet-2);
+    box-shadow: inset 0 0 0 1px var(--color-line-soft);
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+  }
+  .lab-prose pre {
+    overflow-x: auto;
+    padding: 1rem 1.25rem;
+    border-radius: 6px;
+    background: var(--color-panel);
+    color: var(--color-panel-text);
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+  .lab-prose pre code {
+    padding: 0;
+    background: none;
+    box-shadow: none;
+    font-size: inherit;
+  }
+  .prose-table {
+    overflow-x: auto;
+  }
+  .lab-prose table {
+    width: 100%;
+    min-width: 30rem;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+  }
+  .lab-prose th,
+  .lab-prose td {
+    padding: 0.6rem 0.75rem 0.6rem 0;
+    text-align: left;
+    border-bottom: 1px solid var(--color-line-soft);
+  }
+  .lab-prose thead th {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-ink-3);
+    border-bottom: 1px solid var(--color-ink);
+  }
+  .lab-prose td {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Tool panels: fields and verdicts on an instrument.
+   ------------------------------------------------------------------ */
+@layer components {
+  .field {
+    display: grid;
+    align-content: start;
+    gap: 0.4rem;
+    min-width: 0;
+  }
+  .field-label {
+    font-size: 0.8125rem;
+    font-weight: 560;
+    font-stretch: 94%;
+    color: var(--color-panel-muted);
+  }
+  .field-box {
+    display: flex;
+    align-items: center;
+    min-height: 2.75rem;
+    border-radius: 6px;
+    background: #12171a;
+    box-shadow:
+      inset 0 1px 3px rgb(0 0 0 / 0.6),
+      inset 0 0 0 1px var(--color-panel-line);
+    transition: box-shadow 160ms ease;
+  }
+  .field-box:focus-within {
+    box-shadow:
+      inset 0 1px 3px rgb(0 0 0 / 0.6),
+      inset 0 0 0 1.5px var(--color-gold);
+  }
+  .field-input {
+    width: 100%;
+    min-width: 0;
+    height: 2.75rem;
+    padding: 0 0.85rem;
+    border: 0;
+    background: transparent;
+    color: var(--color-panel-text);
+    font-size: 1rem;
+    font-variant-numeric: tabular-nums;
+    outline: none;
+  }
+  .field-input::-webkit-outer-spin-button,
+  .field-input::-webkit-inner-spin-button {
+    opacity: 0.4;
+  }
+  .field-select {
+    appearance: none;
+    padding-right: 2rem;
+    background-image:
+      linear-gradient(45deg, transparent 50%, var(--color-panel-muted) 50%),
+      linear-gradient(135deg, var(--color-panel-muted) 50%, transparent 50%);
+    background-position:
+      calc(100% - 1.05rem) 50%,
+      calc(100% - 0.75rem) 50%;
+    background-size: 0.3rem 0.3rem;
+    background-repeat: no-repeat;
+    cursor: pointer;
+  }
+  .field-select option {
+    background: var(--color-panel);
+    color: var(--color-panel-text);
+  }
+  .field-unit {
+    flex: none;
+    padding-right: 0.85rem;
+    font-size: 0.875rem;
+    color: var(--color-panel-muted);
+  }
+  .field-hint {
+    font-size: 0.75rem;
+    line-height: 1.45;
+    color: var(--color-panel-muted);
+  }
+  .verdict {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    padding: 0.85rem 1rem;
+    border-radius: 6px;
+    background: #12171a;
+    box-shadow: inset 0 0 0 1px var(--color-panel-line);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+  .verdict-led {
+    flex: none;
+    width: 10px;
+    height: 10px;
+    margin-top: 0.4rem;
+    border-radius: 999px;
+  }
+  .verdict[data-tone="ok"] .verdict-led {
+    background: #6fd08c;
+    box-shadow: 0 0 10px rgb(111 208 140 / 0.7);
+  }
+  .verdict[data-tone="warn"] .verdict-led {
+    background: var(--color-ch1);
+    box-shadow: 0 0 10px rgb(242 201 76 / 0.7);
+  }
+  .verdict[data-tone="bad"] .verdict-led {
+    background: #ff6b5b;
+    box-shadow: 0 0 10px rgb(255 107 91 / 0.7);
+  }
+  .tool-grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+  @media (min-width: 64rem) {
+    .tool-grid {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: 2rem;
+    }
+  }
+  .explain h2 {
+    font-size: 1.5rem;
+    font-weight: 640;
+    font-stretch: 112%;
+  }
+  .explain p,
+  .explain li {
+    color: var(--color-ink-2);
+    line-height: 1.7;
+  }
+  .formula {
+    padding: 0.9rem 1rem;
+    overflow-x: auto;
+    border-radius: 4px;
+    background: var(--color-sheet);
+    box-shadow: inset 0 0 0 1px var(--color-line);
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    line-height: 1.7;
+    white-space: pre;
+    color: var(--color-ink);
+  }
+}
+
+@layer components {
+  .tool-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 1.75rem 1.25rem 1.5rem;
+    border-radius: 14px;
+    background: linear-gradient(180deg, #252c30, var(--color-panel) 22%);
+    color: var(--color-panel-text);
+    box-shadow:
+      var(--shadow-object),
+      inset 0 1px 0 rgb(255 255 255 / 0.07);
+    transition: transform 420ms var(--ease-out-expo);
+  }
+  .tool-card:hover {
+    transform: translateY(-4px);
+  }
+  .tool-card .stretched-link:focus-visible::after {
+    outline-color: var(--color-gold);
+  }
+}
+
+/* ------------------------------------------------------------------
+   Intake form: a lab submission sheet.
+   ------------------------------------------------------------------ */
+@layer components {
+  .intake-progress {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .intake-progress li {
+    position: relative;
+    display: grid;
+    gap: 0.5rem;
+    justify-items: start;
+  }
+  .intake-progress li::after {
+    content: "";
+    position: absolute;
+    top: 0.85rem;
+    left: 2.1rem;
+    right: 0.3rem;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--color-line);
+  }
+  .intake-progress li:last-child::after {
+    display: none;
+  }
+  .intake-progress li[data-state="done"]::after {
+    background: var(--color-mask);
+  }
+  .intake-progress-pad {
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 999px;
+    background: var(--color-sheet);
+    box-shadow: inset 0 0 0 1.5px var(--color-line);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-ink-3);
+    transition:
+      background-color 240ms ease,
+      box-shadow 240ms ease,
+      color 240ms ease;
+  }
+  .intake-progress li[data-state="current"] .intake-progress-pad {
+    background: var(--color-gold);
+    color: var(--color-ink);
+    box-shadow: 0 0 0 4px rgb(201 162 77 / 0.25);
+  }
+  .intake-progress li[data-state="done"] .intake-progress-pad {
+    background: var(--color-mask);
+    color: var(--color-silk);
+    box-shadow: none;
+  }
+  .intake-progress-label {
+    font-size: 0.8125rem;
+    font-weight: 560;
+    font-stretch: 94%;
+    color: var(--color-ink-3);
+  }
+  .intake-progress li[data-state="current"] .intake-progress-label {
+    color: var(--color-ink);
+  }
+  @media (max-width: 40rem) {
+    .intake-progress-label {
+      display: none;
+    }
+    .intake-progress li[data-state="current"] .intake-progress-label {
+      display: block;
+      white-space: nowrap;
+    }
+  }
+
+  .intake-label {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    font-stretch: 104%;
+  }
+  .intake-input {
+    width: 100%;
+    padding: 0.7rem 0.85rem;
+    border: 0;
+    border-radius: 4px;
+    background: var(--color-sheet);
+    box-shadow: inset 0 0 0 1px var(--color-line);
+    font-size: 1rem;
+    line-height: 1.5;
+    transition: box-shadow 160ms ease;
+  }
+  .intake-input::placeholder {
+    color: #7d8a90;
+  }
+  .intake-input:focus {
+    outline: none;
+    box-shadow: inset 0 0 0 2px var(--color-mask);
+  }
+  .intake-input[aria-invalid="true"] {
+    box-shadow: inset 0 0 0 2px var(--color-mask);
+    background: rgb(102 20 20 / 0.03);
+  }
+  .intake-error {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 560;
+    color: var(--color-mask);
+  }
+  .intake-error::before {
+    content: "!";
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-top: 0.1rem;
+    border-radius: 999px;
+    background: var(--color-mask);
+    color: var(--color-silk);
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .option-card {
+    position: relative;
+    display: flex;
+    gap: 0.85rem;
+    align-items: flex-start;
+    padding: 1rem;
+    border-radius: 6px;
+    background: var(--color-sheet);
+    box-shadow: inset 0 0 0 1px var(--color-line);
+    cursor: pointer;
+    transition:
+      box-shadow 160ms ease,
+      background-color 160ms ease;
+  }
+  .option-card input,
+  .option-chip input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .option-card::before {
+    content: "";
+    flex: none;
+    width: 1rem;
+    height: 1rem;
+    margin-top: 0.2rem;
+    border-radius: 999px;
+    box-shadow: inset 0 0 0 1.5px var(--color-ink-3);
+    transition:
+      background-color 160ms ease,
+      box-shadow 160ms ease;
+  }
+  .option-card:hover {
+    box-shadow: inset 0 0 0 1.5px var(--color-ink);
+  }
+  .option-card:has(input:checked) {
+    background: #fff;
+    box-shadow: inset 0 0 0 2px var(--color-mask);
+  }
+  .option-card:has(input:checked)::before {
+    background: var(--color-gold);
+    box-shadow:
+      inset 0 0 0 3px var(--color-sheet),
+      0 0 0 1.5px var(--color-mask);
+  }
+  .option-card:has(input:focus-visible),
+  .option-chip:has(input:focus-visible) {
+    outline: 2px solid var(--color-mask);
+    outline-offset: 2px;
+  }
+  .option-chip {
+    position: relative;
+    cursor: pointer;
+  }
+  .option-chip span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.5rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    background: var(--color-sheet);
+    box-shadow: inset 0 0 0 1px var(--color-line);
+    font-size: 0.9375rem;
+    transition:
+      box-shadow 160ms ease,
+      background-color 160ms ease,
+      color 160ms ease;
+  }
+  .option-chip:hover span {
+    box-shadow: inset 0 0 0 1.5px var(--color-ink);
+  }
+  .option-chip input:checked + span {
+    background: var(--color-mask);
+    color: var(--color-silk);
+    box-shadow: none;
+  }
+
+  .intake-done {
+    padding-block: 1rem 0.5rem;
+  }
+  .intake-done-pad {
+    display: block;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 999px;
+    background: var(--color-gold);
+    box-shadow:
+      0 0 0 6px rgb(201 162 77 / 0.25),
+      0 0 24px rgb(226 196 126 / 0.8);
+  }
+}
+
+::view-transition-old(.step-out-next) {
+  animation: step-out-left 200ms ease-in both;
+}
+::view-transition-new(.step-in-next) {
+  animation: step-in-right 420ms var(--ease-out-expo) 120ms both;
+}
+::view-transition-old(.step-out-prev) {
+  animation: step-out-right 200ms ease-in both;
+}
+::view-transition-new(.step-in-prev) {
+  animation: step-in-left 420ms var(--ease-out-expo) 120ms both;
+}
+@keyframes step-out-left {
+  to {
+    opacity: 0;
+    transform: translateX(-28px);
+  }
+}
+@keyframes step-out-right {
+  to {
+    opacity: 0;
+    transform: translateX(28px);
+  }
+}
+@keyframes step-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(28px);
+  }
+}
+@keyframes step-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-28px);
+  }
+}
+
 /* ------------------------------------------------------------------
    Page transition: the sweep.
    Links carry the "sweep" transition type. The outgoing page is wiped
@@ -1690,7 +2391,7 @@ html:active-view-transition-type(sweep) .vt-stage {
     --probe: 0%;
   }
   to {
-    --probe: 100%;
+    --probe: 103%;
   }
 }
 
@@ -1727,6 +2428,10 @@ html:active-view-transition-type(sweep) .vt-stage {
   .plate-layer {
     transition: none !important;
     transform: translateY(calc(var(--n) * 46px)) !important;
+  }
+  .process-fill,
+  .process-pad {
+    animation: none !important;
   }
   .plate-layer text,
   .plate-layer line {

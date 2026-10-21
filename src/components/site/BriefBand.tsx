@@ -6,7 +6,7 @@ import { TLink } from "./TLink";
 
 /** The closing call to action, printed like silkscreen on a soldermask board. */
 export function BriefBand() {
-  const pathname = usePathname();
+  const pathname = usePathname().replace(/\/$/, "");
   if (pathname === "/contact") return null;
 
   return (

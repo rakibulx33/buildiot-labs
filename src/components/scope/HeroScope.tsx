@@ -55,7 +55,6 @@ export function HeroScope() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const frameRef = useRef({ zoom: 0, overview: 0 });
   const drawRef = useRef<() => void>(() => {});
-  const introDone = useRef(false);
   const groupId = useId();
 
   const wake = useMemo(() => sampleWake(REFERENCE_WAKE, 1, 11), []);
@@ -135,10 +134,10 @@ export function HeroScope() {
   }, [wake]);
 
   // Power-on: wait for the page-load sequence, then sweep the trace once.
+  // Reads the media query directly so the first run already knows; with
+  // reduced motion the finished trace is drawn at once.
   useEffect(() => {
-    if (introDone.current) return;
-    introDone.current = true;
-    if (reduced) {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       frameRef.current = { zoom: 1, overview: 1 };
       drawRef.current();
       return;
@@ -160,16 +159,15 @@ export function HeroScope() {
     };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [reduced]);
+  }, []);
 
   // Re-sweep the overview when the reporting interval changes.
-  const firstInterval = useRef(true);
+  const shownInterval = useRef(intervalSeconds);
   useEffect(() => {
-    if (firstInterval.current) {
-      firstInterval.current = false;
-      return;
-    }
-    if (reduced || frameRef.current.zoom < 1) {
+    if (shownInterval.current === intervalSeconds) return;
+    shownInterval.current = intervalSeconds;
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (still || frameRef.current.zoom < 1) {
       drawRef.current();
       return;
     }
@@ -182,8 +180,11 @@ export function HeroScope() {
       if (frameRef.current.overview < 1) frame = requestAnimationFrame(tick);
     };
     frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, [intervalSeconds, reduced]);
+    return () => {
+      cancelAnimationFrame(frame);
+      frameRef.current = { ...frameRef.current, overview: 1 };
+    };
+  }, [intervalSeconds]);
 
   const label = `Modelled supply current of a sensor node reporting every ${INTERVALS[intervalIdx].label}: average ${avgQ.value} ${avgQ.unit}, about ${lifeQ.value} ${lifeQ.unit} on a ${BATTERIES[batteryIdx].label} mAh battery.`;
 
@@ -266,7 +267,7 @@ export function HeroScope() {
           <div className="readout">
             <dt>Charge spent awake</dt>
             <dd>
-              {Math.round(share)}
+              {share >= 99 ? share.toFixed(1) : Math.round(share)}
               <small>%</small>
             </dd>
           </div>

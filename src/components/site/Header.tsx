@@ -7,7 +7,8 @@ import { LogoMark, Wordmark } from "./Logo";
 import { TLink } from "./TLink";
 
 function isActive(pathname: string, href: string) {
-  return pathname === href || pathname.startsWith(`${href}/`);
+  const path = pathname.replace(/\/$/, "") || "/";
+  return path === href || path.startsWith(`${href}/`);
 }
 
 export function Header() {
