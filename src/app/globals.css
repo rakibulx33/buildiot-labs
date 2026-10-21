@@ -1,26 +1,331 @@
 @import "tailwindcss";
 
+/* ------------------------------------------------------------------
+   BuildIoT Labs — design tokens
+   The page is a lab bench seen from above: an anti-static mat (mat),
+   with sheets of paper (sheet), instruments (panel, screen) and boards
+   in the brand's soldermask maroon (mask) with ENIG gold pads (gold).
+   ------------------------------------------------------------------ */
+@theme {
+  --color-mat: #dce3e4;
+  --color-mat-2: #cfd8da;
+  --color-sheet: #fbfcfb;
+  --color-sheet-2: #f1f4f4;
+  --color-ink: #14191c;
+  --color-ink-2: #3e4a50;
+  --color-ink-3: #56646a;
+  --color-line: #b9c4c8;
+  --color-line-soft: #d3dbdd;
+
+  --color-mask: #661414;
+  --color-mask-2: #521010;
+  --color-mask-3: #7a1c17;
+  --color-gold: #c9a24d;
+  --color-gold-2: #e2c47e;
+  --color-silk: #f4f2ee;
+
+  --color-panel: #1a1f22;
+  --color-panel-2: #232a2e;
+  --color-panel-line: #343d42;
+  --color-panel-text: #e9e5dd;
+  --color-panel-muted: #9aa6ab;
+  --color-screen: #0e1316;
+  --color-ch1: #f2c94c;
+  --color-ch2: #5cc6e0;
+
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-b612), ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-in-out-sine: cubic-bezier(0.37, 0, 0.63, 1);
+
+  --breakpoint-xs: 30rem;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --grid-line: rgb(20 25 28 / 0.05);
+  --header-h: 4.5rem;
+  --wrap-pad: clamp(1rem, 4vw, 3rem);
+  --shadow-sheet: 0 1px 0 rgb(20 25 28 / 0.06), 0 2px 6px -2px rgb(20 25 28 / 0.18);
+  --shadow-object: 0 1px 0 rgb(20 25 28 / 0.1), 0 10px 24px -12px rgb(20 25 28 / 0.45),
+    0 24px 48px -32px rgb(20 25 28 / 0.4);
+  --shadow-board: 0 1px 0 rgb(20 25 28 / 0.25), 0 6px 14px -6px rgb(20 25 28 / 0.5);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    scroll-padding-top: calc(var(--header-h) + 1rem);
+    background-color: var(--color-mat);
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  body,
+  .page-shell {
+    background-color: var(--color-mat);
+    /* The printed grid of an ESD mat */
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 24px 24px;
+    background-position: -1px -1px;
+  }
+
+  body {
+    min-height: 100dvh;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: var(--color-mask);
+    color: var(--color-silk);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-mask);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .on-dark :focus-visible,
+  .on-dark:focus-visible {
+    outline-color: var(--color-gold);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  img,
+  svg,
+  canvas {
+    display: block;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ------------------------------------------------------------------
+   Type. Width is the expressive axis: wide for legends (like the
+   lettering on an instrument front panel), normal for reading.
+   Scale: 12 14 16 18 21 24 36 48 60 72 96
+   ------------------------------------------------------------------ */
+@layer components {
+  .t-display {
+    font-stretch: 125%;
+    font-weight: 700;
+    font-size: clamp(2.6rem, 1rem + 5.6vw, 6rem);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+  }
+  .t-h1 {
+    font-stretch: 125%;
+    font-weight: 680;
+    font-size: clamp(2.25rem, 1.3rem + 3.4vw, 4.5rem);
+    line-height: 1;
+    letter-spacing: -0.025em;
+  }
+  .t-h2 {
+    font-stretch: 120%;
+    font-weight: 660;
+    font-size: clamp(1.75rem, 1.15rem + 2vw, 3rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+  .t-h3 {
+    font-stretch: 112%;
+    font-weight: 620;
+    font-size: clamp(1.3125rem, 1.15rem + 0.5vw, 1.5rem);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+  .t-h4 {
+    font-stretch: 106%;
+    font-weight: 620;
+    font-size: 1.125rem;
+    line-height: 1.3;
+  }
+  .t-lead {
+    font-size: clamp(1.125rem, 1rem + 0.45vw, 1.3125rem);
+    line-height: 1.5;
+    color: var(--color-ink-2);
+  }
+  .t-label {
+    font-stretch: 87.5%;
+    font-weight: 600;
+    font-size: 0.875rem;
+    line-height: 1.3;
+    letter-spacing: 0.005em;
+    color: var(--color-ink-3);
+  }
+  .t-fine {
+    font-stretch: 92%;
+    font-size: 0.75rem;
+    line-height: 1.45;
+    color: var(--color-ink-3);
+  }
+  .t-readout {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0;
+  }
+
+  .wrap {
+    width: 100%;
+    max-width: 85rem;
+    margin-inline: auto;
+    padding-inline: var(--wrap-pad);
+  }
+
+  .measure {
+    max-width: 38rem;
+  }
+
+  /* Plain text link with an underline that reads as a trace */
+  .link {
+    color: inherit;
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.22em;
+    text-decoration-color: color-mix(in oklab, currentColor 45%, transparent);
+    transition: text-decoration-color 160ms ease, color 160ms ease;
+  }
+  .link:hover {
+    text-decoration-color: currentColor;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Page transition: the sweep.
+   Links carry the "sweep" transition type. The outgoing page is wiped
+   off left-to-right behind a gold probe line, exposing a soldermask
+   stage, then the incoming page is wiped on over it.
+
+   React keeps the document root out of view transitions and collapses
+   ::view-transition, so the stage is a real element (.vt-stage) that is
+   only given a view-transition-name while a sweep is running.
+   ------------------------------------------------------------------ */
+@property --probe {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
+::view-transition {
+  pointer-events: none;
+}
+
+/* Each page paints its own bench so its snapshot is opaque. */
+.page-shell {
+  min-height: calc(100dvh - var(--header-h));
+}
+
+.vt-stage {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+html:active-view-transition-type(sweep) .vt-stage {
+  view-transition-name: sweep-stage;
+}
+
+::view-transition-group(sweep-stage) {
+  background-color: var(--color-mask);
+  background-image:
+    linear-gradient(
+      90deg,
+      transparent calc(var(--probe) - 3px),
+      var(--color-gold) calc(var(--probe) - 3px),
+      var(--color-gold) var(--probe),
+      transparent var(--probe)
+    ),
+    linear-gradient(rgb(244 242 238 / 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(244 242 238 / 0.07) 1px, transparent 1px);
+  background-size:
+    100% 100%,
+    24px 24px,
+    24px 24px;
+  animation: probe-sweep 560ms var(--ease-in-out-quart) both;
+}
+
+::view-transition-old(sweep-stage),
+::view-transition-new(sweep-stage) {
+  display: none;
+}
+
+::view-transition-old(.page-out) {
+  animation: wipe-off 560ms var(--ease-in-out-quart) both;
+}
+
+::view-transition-new(.page-in) {
+  animation: wipe-on 620ms var(--ease-out-expo) 380ms both;
+}
+
+::view-transition-group(.page-out),
+::view-transition-group(.page-in) {
+  animation: none;
+}
+
+/* The header stays put while the pages sweep underneath it. */
+::view-transition-group(site-header) {
+  animation: none;
+  z-index: 100;
+}
+::view-transition-old(site-header) {
+  display: none;
+}
+::view-transition-new(site-header) {
+  animation: none;
+}
+
+@keyframes probe-sweep {
+  from {
+    --probe: 0%;
+  }
+  to {
+    --probe: 100%;
+  }
+}
+
+@keyframes wipe-off {
+  from {
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 100%);
+  }
+}
+
+@keyframes wipe-on {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*),
+  ::view-transition {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
 }
