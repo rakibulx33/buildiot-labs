@@ -38,9 +38,12 @@ export function Header() {
     };
   }, []);
 
-  useEffect(() => {
+  // Show the header again after every navigation (state adjusted during render).
+  const [shownFor, setShownFor] = useState(pathname);
+  if (shownFor !== pathname) {
+    setShownFor(pathname);
     setHidden(false);
-  }, [pathname]);
+  }
 
   useEffect(() => {
     document.documentElement.toggleAttribute("data-menu-open", menuOpen);
