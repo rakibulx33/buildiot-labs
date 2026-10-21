@@ -1,0 +1,47 @@
+export const meta = {
+  entry: 1,
+  date: "2026-10-21",
+  title: "Why your ESP32 dev board can't reach 10 µA in deep sleep",
+  summary:
+    "The datasheet says microamps. The meter says milliamps. The chip is fine; the board around it was built for the desk.",
+  topics: ["Power", "ESP32"],
+};
+
+The ESP32 datasheet puts deep sleep at around 10 µA with the RTC timer running. Put a meter on a typical ESP32 development board in deep sleep and you will usually read a few milliamps instead, hundreds of times more. Nothing is wrong with the chip. The board around it was designed to sit on a desk on USB power, not to run for a year on a cell.
+
+## Where the current goes
+
+On a typical DevKit-style board, several parts keep drawing current while the ESP32 sleeps:
+
+- **The voltage regulator.** Many boards use an AMS1117-3.3. Its datasheet gives a quiescent current of 5 mA typical, drawn whether or not the ESP32 needs anything.
+- **The power LED.** A small LED and its resistor across the 3.3 V rail costs around a milliamp on its own.
+- **The USB-to-serial bridge.** The chip that lets you flash the board sits on the same rail on some designs and adds its own standby current.
+- **Pull-up resistors.** A 10 kΩ pull-up held low draws 330 µA. Boot-strapping pins and sensor breakouts often carry several.
+
+Add a sensor breakout with its own regulator and LED, and the sleep floor climbs again.
+
+## How to see it
+
+A multimeter on its milliamp range won't show microamps, and on its microamp range its burden voltage can brown out the board the moment it wakes and draws 300 mA. The ranges are the problem: whatever makes 10 µA visible gets in the way of a radio burst.
+
+Either measure sleep and wake separately, with the meter shorted out while the radio runs, or use a power profiler that switches ranges by itself and logs the whole cycle.
+
+## What a low-power node does instead
+
+- Uses a bare module on its own board, or a development board made for battery use.
+- Picks a regulator whose datasheet quotes quiescent current in single-digit microamps.
+- Leaves out the always-on LED, or drives it from a GPIO.
+- Powers sensors from a GPIO or a load switch so they are off while the chip sleeps.
+- Keeps the USB bridge on a rail that only USB powers.
+- Checks every pull-up and its idle state.
+
+## What we do now
+
+We don't quote a battery life until we have measured sleep current on the actual board, with the actual sensors attached. The datasheet figure is the floor the chip allows, not what a device draws.
+
+To see how much the sleep floor matters for your reporting interval, try the [battery-life tool](/tools/battery-life): set sleep current to 5,000 µA and then to 15 µA, and compare.
+
+### References
+
+- [ESP32 Series Datasheet](https://www.espressif.com/sites/default/files/documentation/esp32_datasheet_en.pdf), Espressif, power consumption by power mode.
+- [AMS1117 datasheet](http://www.advanced-monolithic.com/pdf/ds1117.pdf), Advanced Monolithic Systems, quiescent current.

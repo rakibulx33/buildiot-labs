@@ -1,0 +1,48 @@
+export const meta = {
+  entry: 2,
+  date: "2026-10-21",
+  title: "Reading analog sensors on the ESP32 without fooling yourself",
+  summary: "The ESP32's ADC is good enough for most sensors, if you respect which pins, which range, calibration and impedance.",
+  topics: ["Firmware", "ESP32", "Sensors"],
+};
+
+The ESP32's ADC is good enough for most sensor work. Most bad readings we see come from four mistakes, and all four are cheap to avoid.
+
+## 1. Use ADC1 when Wi-Fi is on
+
+The ESP32 has two ADCs, and ADC2 is shared with the Wi-Fi driver. On the original ESP32, ADC2 reads fail while Wi-Fi is running. On the ESP32-C3, one-shot reads on ADC2 are not supported at all.
+
+Put analog sensors on ADC1 pins: GPIO32 to GPIO39 on the ESP32, GPIO0 to GPIO4 on the ESP32-C3.
+
+## 2. Know the range of each attenuation setting
+
+Attenuation trades range for resolution. The ESP-IDF documentation gives the range in which readings are accurate:
+
+| Attenuation | ESP32 | ESP32-S3 | ESP32-C3 |
+| --- | --- | --- | --- |
+| 0 dB | 100 to 950 mV | 0 to 950 mV | 0 to 750 mV |
+| 2.5 dB | 100 to 1250 mV | 0 to 1250 mV | 0 to 1050 mV |
+| 6 dB | 150 to 1750 mV | 0 to 1750 mV | 0 to 1300 mV |
+| 12 dB | 150 to 2450 mV | 0 to 3100 mV | 0 to 2500 mV |
+
+Two traps sit in this table. On the original ESP32, readings below 100 to 150 mV are not reliable, so a sensor that rests near 0 V reads worst exactly where you care most. And a 5 V sensor output needs a divider to fit; the [divider tool](/tools/voltage-divider) does the arithmetic and checks the range for you.
+
+## 3. Calibrate in software
+
+Raw counts are not millivolts. Every chip's ADC has its own offset and gain, and ESP-IDF's calibration schemes use values burned in at the factory to convert one to the other. Create a calibration handle (line fitting or curve fitting, depending on the chip) and convert with `adc_cali_raw_to_voltage()` instead of scaling raw counts yourself.
+
+## 4. Give the ADC a quiet, low-impedance signal
+
+The ADC samples by charging a small internal capacitor. A divider made of hundreds of kilohms can't charge it fully between samples, and readings sag.
+
+- Put a 100 nF capacitor from the ADC pin to ground, close to the pin.
+- Average 8 to 16 samples per reading. It costs microseconds and removes most of the noise.
+- If readings jump while Wi-Fi transmits, take them before the radio starts.
+
+## What we do now
+
+ADC1 pins only. A divider sized to the recommended range. A capacitor at the pin. The calibration API, an averaged reading, and on battery nodes, a reading taken before the radio wakes.
+
+### References
+
+- ESP-IDF Programming Guide, *Analog to Digital Converter*: attenuation ranges, ADC2 limitations and the calibration API, for the ESP32, ESP32-S3 and ESP32-C3.

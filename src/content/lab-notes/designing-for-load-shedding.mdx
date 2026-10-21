@@ -1,0 +1,44 @@
+export const meta = {
+  entry: 3,
+  date: "2026-10-21",
+  title: "Designing devices for load-shedding",
+  summary:
+    "Power cuts, dips, inverter switch-overs and whole neighbourhoods coming back at once. A checklist for devices that live on Bangladesh's grid.",
+  topics: ["Firmware", "Reliability"],
+};
+
+A device on mains power in Bangladesh sees scheduled load-shedding, voltage dips, inverter and generator switch-overs, and the moment power returns to a whole area at once. A device that behaves on a lab bench with clean power can fail in all four. This is the checklist we work from.
+
+## Treat brownouts as normal
+
+Before power fails, the supply often sags. A microcontroller that keeps running on a sagging supply can corrupt a flash write or behave erratically. The ESP32's brownout detector resets the chip below a set threshold. Keep it enabled; ESP-IDF turns it on by default.
+
+## Make every write survive a cut
+
+Assume power can disappear in the middle of any flash write.
+
+- Keep settings in NVS, which ESP-IDF designs to tolerate power loss during writes.
+- Write logs to a file system built for power loss, such as LittleFS, rather than FAT.
+- Write less often. Collect readings in RAM and flush them in batches.
+
+## Ride through short gaps
+
+An inverter takes a moment to pick up the load, and even a short gap resets an unprepared device. A bulk capacitor or a supercapacitor on the DC side can carry a low-power device through a switch-over. A voltage-sense input on the supply lets the firmware save its state when the input starts to fall.
+
+## Expect the whole area to come back at once
+
+When power returns to a neighbourhood, every device reboots in the same second and tries to join Wi-Fi and the broker together. Wait a random delay before the first connection, and use exponential backoff with jitter on retries, so your broker doesn't face a reconnect storm.
+
+## Recover without a visit
+
+- Keep the task and interrupt watchdogs enabled, and feed them only from tasks that are doing real work.
+- Use OTA with rollback, so an update cut short by a power failure leaves the previous firmware bootable. In ESP-IDF, a new image is marked valid only after it has run correctly.
+- Read the reset reason at boot with `esp_reset_reason()` and publish it, so field data tells brownouts apart from crashes.
+
+## Test it the way the field will
+
+- Switch the supply off and on at random moments, including during flash writes and during an OTA update.
+- Sag the supply slowly with an adjustable bench supply and watch what the device does on the way down.
+- Restart a batch of devices together against your real broker.
+
+A device that passes these on the bench is far less likely to need a site visit after the next outage.

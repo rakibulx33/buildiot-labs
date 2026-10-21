@@ -1,0 +1,27 @@
+export const meta = {
+  entry: 4,
+  date: "2026-10-21",
+  title: "What MQTT over TLS costs a battery node",
+  summary:
+    "A node that reconnects for every report pays for a TLS handshake every time. Often the handshake, not the reading, sets the battery life.",
+  topics: ["Telemetry", "Power"],
+};
+
+A sensor node that sleeps between reports usually reconnects for each one. Every reconnect pays for a TLS handshake before a single byte of the reading moves. On many nodes, that handshake decides the battery life more than anything else.
+
+## The handshake is the expensive part
+
+A TLS connection opens with a handshake. The server sends its certificate chain, the two sides agree on keys, and only then does MQTT say hello. That's several round trips and a few kilobytes on the air, plus public-key arithmetic on a small CPU, all before a 50-byte reading goes out. The radio stays on for all of it.
+
+## Four ways to pay less
+
+1. **Stay connected when you can.** A mains-powered node, or one that reports every few seconds, should keep one TLS connection open and let MQTT keep-alive hold it.
+2. **Resume sessions.** TLS session resumption skips most of the handshake on a reconnect. ESP-TLS can save and reuse a client session; keeping it across deep sleep takes some care, because the session lives in RAM.
+3. **Prefer ECDSA certificates.** An ECDSA certificate chain is much smaller than an RSA one, so less data crosses the air on every full handshake.
+4. **Batch readings.** Wake to measure every minute, but connect every fifteen and send fifteen readings in one message. The handshake cost is shared across all of them.
+
+## Count it before you choose
+
+Our [MQTT data tool](/tools/mqtt-data) estimates the bytes per message for a persistent connection and for reconnecting every time, with handshake presets for RSA chains, ECDSA chains and resumed sessions.
+
+Bytes are only part of the cost. For a battery, radio-on time matters more. But when most of the bytes per message are handshake, most of the radio time usually is too.
