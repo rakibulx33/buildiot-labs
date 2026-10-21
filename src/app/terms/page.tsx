@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import { PageHead } from "@/components/ui/PageHead";
-import { canonicalUrl, site } from "@/content/site";
+import { site } from "@/content/site";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Terms",
-  description: "Terms for using the BuildIoT Lab website, and how engagement terms are agreed.",
-  alternates: { canonical: canonicalUrl("/terms/") },
-};
+  description:
+    "Terms for using the BuildIoT Lab website, how calculators and reference designs should be used, and how engagement terms are agreed in writing.",
+  path: "/terms/",
+});
 
 export default function TermsPage() {
   return (

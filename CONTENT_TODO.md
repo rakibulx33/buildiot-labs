@@ -38,3 +38,7 @@ The site is built and every page works. These items need the owners' input befor
 - [ ] **Production cut-over.** The live buildiotlabs.com is a different implementation. Plan redirects from old routes (301) before pointing the domain here, and keep useful existing pages.
 - [ ] **Run Lighthouse and Core Web Vitals** on the deployed site and record the results; no scores are claimed on the site.
 - [ ] **Founders approve** final content, IP and confidentiality wording, and the release.
+- [ ] **Search Console and Bing Webmaster.** Add the property, verify it (DNS TXT or the `NEXT_PUBLIC_*_SITE_VERIFICATION` variables), submit the sitemap. See README, SEO.
+- [ ] **Case studies and approved images.** Real, approved case studies and images are the biggest SEO gain left; the code is ready for them.
+- [ ] **Backlinks.** Link from relevant, genuine places (supplier, university and community pages). Do not buy links.
+- [ ] **Sitemap date.** Update `CONTENT_UPDATED` in `src/app/sitemap.ts` whenever page content changes.

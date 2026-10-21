@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import { BatteryTool } from "@/components/tools/BatteryTool";
 import { ToolPage } from "@/components/tools/ToolPage";
-import { canonicalUrl } from "@/content/site";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Battery-life estimator",
+export const metadata: Metadata = pageMeta({
+  title: "ESP32 Battery Life Calculator",
   description:
-    "Estimate how long a duty-cycled IoT node runs on a battery from its sleep current, wake current and reporting interval.",
-  alternates: { canonical: canonicalUrl("/tools/battery-life/") },
-};
+    "Estimate how long a duty-cycled IoT node runs on a battery from its sleep current, wake current, wake time and reporting interval. Assumptions shown.",
+  path: "/tools/battery-life/",
+});
 
 export default function BatteryLifePage() {
   return (

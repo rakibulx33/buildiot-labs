@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import { TLink } from "@/components/site/TLink";
 import { PageHead } from "@/components/ui/PageHead";
-import { canonicalUrl } from "@/content/site";
 import { tools } from "@/content/tools";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Tools",
-  description: "Free engineering calculators from BuildIoT Lab: battery life, voltage dividers for ADCs, and MQTT data use.",
-  alternates: { canonical: canonicalUrl("/tools/") },
-};
+export const metadata: Metadata = pageMeta({
+  title: "Free IoT Engineering Calculators",
+  description:
+    "Free calculators for connected-device design: ESP32 battery life, ADC voltage dividers and MQTT data usage. Each one states its assumptions.",
+  path: "/tools/",
+});
 
 export default function ToolsPage() {
   return (

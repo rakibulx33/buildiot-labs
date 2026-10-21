@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { Engagements } from "@/components/home/Engagements";
 import { TLink } from "@/components/site/TLink";
 import { PageHead } from "@/components/ui/PageHead";
-import { canonicalUrl } from "@/content/site";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Engagement models",
-  description: "Three ways to work with BuildIoT Lab: a review, a scoped build sprint, or a retainer. Every engagement is quoted as a written proposal after we read your brief.",
-  alternates: { canonical: canonicalUrl("/pricing/") },
-};
+export const metadata: Metadata = pageMeta({
+  title: "Engagement Models: Review, Sprint, Retainer",
+  description:
+    "Three ways to work with BuildIoT Lab: a review, a scoped build sprint or a retainer. Every engagement is a written proposal after we read your brief.",
+  path: "/pricing/",
+});
 
 const DRIVERS = [
   { t: "How much is unknown", d: "A device that has never been built carries more risk than a fix to one that works. We price that honestly, or suggest a short review first to shrink it." },

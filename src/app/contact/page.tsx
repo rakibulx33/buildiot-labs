@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import { IntakeForm } from "@/components/contact/IntakeForm";
 import { TLink } from "@/components/site/TLink";
-import { canonicalUrl, site } from "@/content/site";
+import { site } from "@/content/site";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Start a Project",
-  description: "Share a short technical brief with BuildIoT Lab. Three short steps; we reply by email with questions or a first engineering step.",
-  alternates: { canonical: canonicalUrl("/contact/") },
-};
+export const metadata: Metadata = pageMeta({
+  title: "Start an IoT Engineering Project",
+  description:
+    "Share a short technical brief with BuildIoT Lab. Tell us the service you need, your stage and timeline, and we reply by email with the next engineering step.",
+  path: "/contact/",
+});
 
 export default function ContactPage() {
   return (

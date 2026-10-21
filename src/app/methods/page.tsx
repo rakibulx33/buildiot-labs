@@ -2,13 +2,15 @@ import type { Metadata } from "next";
 import { TLink } from "@/components/site/TLink";
 import { MethodTag } from "@/components/ui/MethodTag";
 import { PageHead } from "@/components/ui/PageHead";
-import { canonicalUrl, site } from "@/content/site";
+import { site } from "@/content/site";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "How we measure",
-  description: "What the Measured, Model and Method note pending tags on BuildIoT Lab numbers mean, and how we measure current on the bench.",
-  alternates: { canonical: canonicalUrl("/methods/") },
-};
+export const metadata: Metadata = pageMeta({
+  title: "How We Measure and Label Numbers",
+  description:
+    "What the Measured, Model and Unverified tags on BuildIoT Lab figures mean, and how we measure current on the bench so results can be trusted.",
+  path: "/methods/",
+});
 
 const KINDS = [
   {

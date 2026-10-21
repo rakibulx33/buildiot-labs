@@ -4,13 +4,14 @@ import { TLink } from "@/components/site/TLink";
 import { PageHead } from "@/components/ui/PageHead";
 import { faqs } from "@/content/faq";
 import { steps } from "@/content/process";
-import { canonicalUrl } from "@/content/site";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "How a project runs",
-  description: "Brief, scope, build, test, hand over: how a BuildIoT Lab project runs, with the inputs, outputs and acceptance criteria for each step.",
-  alternates: { canonical: canonicalUrl("/process/") },
-};
+export const metadata: Metadata = pageMeta({
+  title: "IoT Product Development Process",
+  description:
+    "Brief, scope, build, test, hand over: how BuildIoT Lab runs a hardware, firmware and software project, with inputs, outputs and acceptance criteria.",
+  path: "/process/",
+});
 
 const SCOPE = [
   "What we will build, and what we won't",

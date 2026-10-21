@@ -11,13 +11,14 @@ import { ActiveWhenVisible } from "@/components/ui/ActiveWhenVisible";
 import { PageHead } from "@/components/ui/PageHead";
 import { services, type ServiceSlug } from "@/content/services";
 import { canonicalUrl } from "@/content/site";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Services",
+export const metadata: Metadata = pageMeta({
+  title: "PCB Design, Firmware & IoT Cloud Services",
   description:
-    "IoT hardware design, custom PCB design, embedded firmware, IoT software and cloud, and technical consulting, delivered remotely.",
-  alternates: { canonical: canonicalUrl("/services/") },
-};
+    "BuildIoT Lab delivers IoT hardware design, custom PCB design, embedded firmware, IoT software and cloud, and remote technical consulting, with a clear handover.",
+  path: "/services/",
+});
 
 const PLATES: Partial<Record<ServiceSlug, { Plate: (p: { className?: string }) => React.ReactNode; caption: string }>> = {
   hardware: { Plate: PowerPlate, caption: "A duty-cycled node: short, expensive wakes and long, cheap sleeps." },
@@ -28,8 +29,25 @@ const PLATES: Partial<Record<ServiceSlug, { Plate: (p: { className?: string }) =
 };
 
 export default function ServicesPage() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "BuildIoT Lab services",
+    itemListElement: services.map((s, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      item: {
+        "@type": "Service",
+        name: s.name,
+        description: s.summary,
+        url: canonicalUrl(`/services/#${s.slug}`),
+        provider: { "@id": canonicalUrl("/#organization") },
+      },
+    })),
+  };
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <PageHead
         title="Services"
         lead="Connected products need hardware, firmware and software that work together. We design the electronics, develop the embedded systems, build the supporting applications and document the handover."

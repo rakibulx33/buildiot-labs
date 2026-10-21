@@ -12,33 +12,23 @@ import { SectionHead } from "@/components/ui/SectionHead";
 import { ReportSheet } from "@/components/work/ReportSheet";
 import { designs } from "@/content/designs";
 import { services } from "@/content/services";
-import { canonicalUrl, site } from "@/content/site";
+import { site } from "@/content/site";
 import { reports } from "@/content/work";
 import { allNotes } from "@/lib/notes";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata = {
-  alternates: { canonical: canonicalUrl("/") },
-};
+export const metadata = pageMeta({
+  title: "BuildIoT Lab | Engineering Ideas Into Reality",
+  description: site.description,
+  path: "/",
+});
 
 export default async function Home() {
   const notes = (await allNotes()).slice(0, 3);
   const featured = reports[0];
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "ProfessionalService",
-    name: site.name,
-    url: canonicalUrl("/"),
-    logo: canonicalUrl("/logo.png"),
-    email: site.email,
-    description: site.description,
-    slogan: site.motto,
-    knowsAbout: ["IoT hardware design", "PCB design", "Embedded firmware", "ESP32", "STM32", "MQTT", "IoT software and cloud"],
-  };
-
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Hero />
 
       <section aria-labelledby="build-title" className="pb-20 pt-16 lg:pb-28 lg:pt-20">

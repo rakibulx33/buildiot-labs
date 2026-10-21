@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { Header } from "@/components/site/Header";
 import { absoluteUrl, isPreview, ogImage, site } from "@/content/site";
+import { organizationJsonLd } from "@/lib/seo";
 import "./globals.css";
 
 const archivo = localFont({
@@ -35,10 +36,14 @@ export const metadata: Metadata = {
     type: "website",
     siteName: site.name,
     locale: "en_US",
-    url: absoluteUrl("/"),
     images: [ogImage],
   },
   twitter: { card: "summary_large_image", images: [ogImage.url] },
+  // Optional search-console ownership tags, set as repository variables (see README).
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
+    other: process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION ? { "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION } : undefined,
+  },
 };
 
 export const viewport: Viewport = {
@@ -50,6 +55,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${archivo.variable} ${b612.variable}`}>
       <body>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd()) }} />
         <div className="vt-stage" aria-hidden="true" />
         <Header />
         {children}

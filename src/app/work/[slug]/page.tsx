@@ -5,8 +5,8 @@ import { TLink } from "@/components/site/TLink";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { MethodTag } from "@/components/ui/MethodTag";
 import { ReportFields, ReportHead } from "@/components/work/ReportSheet";
-import { canonicalUrl } from "@/content/site";
 import { getReport, reports } from "@/content/work";
+import { pageMeta } from "@/lib/seo";
 
 export const dynamicParams = false;
 
@@ -18,11 +18,11 @@ export async function generateMetadata({ params }: PageProps<"/work/[slug]">): P
   const { slug } = await params;
   const report = getReport(slug);
   if (!report) return {};
-  return {
-    title: report.title,
+  return pageMeta({
+    title: report.seoTitle ?? report.title,
     description: report.summary,
-    alternates: { canonical: canonicalUrl(`/work/${report.slug}/`) },
-  };
+    path: `/work/${report.slug}/`,
+  });
 }
 
 export default async function ReportPage({ params }: PageProps<"/work/[slug]">) {
@@ -32,7 +32,7 @@ export default async function ReportPage({ params }: PageProps<"/work/[slug]">) 
 
   return (
     <article className="wrap pb-24 pt-10 sm:pt-14">
-      <Breadcrumb items={[{ href: "/work", label: "Work" }]} current={report.number} />
+      <Breadcrumb items={[{ href: "/work", label: "Work" }]} current={report.number} path={`/work/${report.slug}/`} ldName={report.seoTitle ?? report.title} />
 
       <ViewTransition name={`report-${report.slug}`} share="morph" default="none">
         <div className="sheet mt-8 overflow-hidden">

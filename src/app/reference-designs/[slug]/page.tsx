@@ -5,7 +5,7 @@ import { DesignBoard } from "@/components/designs/DesignCard";
 import { TLink } from "@/components/site/TLink";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { designs, getDesign } from "@/content/designs";
-import { canonicalUrl } from "@/content/site";
+import { pageMeta } from "@/lib/seo";
 
 export const dynamicParams = false;
 
@@ -17,11 +17,11 @@ export async function generateMetadata({ params }: PageProps<"/reference-designs
   const { slug } = await params;
   const design = getDesign(slug);
   if (!design) return {};
-  return {
-    title: `${design.name}, reference design`,
+  return pageMeta({
+    title: `${design.name} reference design (${design.code})`,
     description: design.summary,
-    alternates: { canonical: canonicalUrl(`/reference-designs/${design.slug}/`) },
-  };
+    path: `/reference-designs/${design.slug}/`,
+  });
 }
 
 export default async function DesignPage({ params }: PageProps<"/reference-designs/[slug]">) {
@@ -37,7 +37,7 @@ export default async function DesignPage({ params }: PageProps<"/reference-desig
   return (
     <article className="pb-24">
       <div className="wrap pt-10 sm:pt-14">
-        <Breadcrumb items={[{ href: "/reference-designs", label: "Reference designs" }]} current={design.name} />
+        <Breadcrumb items={[{ href: "/reference-designs", label: "Reference designs" }]} current={design.name} path={`/reference-designs/${design.slug}/`} />
         <div className="mt-8 grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-8">
           <div className="lg:col-span-5">
             <p className="font-mono text-sm text-ink-3">{design.code}</p>

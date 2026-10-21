@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { TLink } from "@/components/site/TLink";
 import { PageHead } from "@/components/ui/PageHead";
 import { faqs } from "@/content/faq";
-import { canonicalUrl } from "@/content/site";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "FAQ",
-  description: "Answers about scope, deliverables, ownership, NDAs and how BuildIoT Lab works with clients.",
-  alternates: { canonical: canonicalUrl("/faq/") },
-};
+export const metadata: Metadata = pageMeta({
+  title: "FAQ: Scope, Ownership and NDAs",
+  description:
+    "Answers about deliverables, PCB files, ownership, NDAs, remote delivery and pricing at BuildIoT Lab, an IoT and embedded product engineering team.",
+  path: "/faq/",
+});
 
 export default function FaqPage() {
   const jsonLd = {

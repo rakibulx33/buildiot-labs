@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import { MqttTool } from "@/components/tools/MqttTool";
 import { ToolPage } from "@/components/tools/ToolPage";
-import { canonicalUrl } from "@/content/site";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "MQTT data budget",
+export const metadata: Metadata = pageMeta({
+  title: "MQTT Data Usage Calculator",
   description:
-    "Estimate how much mobile data MQTT devices use per message and per month, with TLS, QoS, keep-alive and reconnect overheads.",
-  alternates: { canonical: canonicalUrl("/tools/mqtt-data/") },
-};
+    "Estimate the bytes an MQTT sensor node sends per message and per month, including topic, payload and protocol overhead, to size a data plan.",
+  path: "/tools/mqtt-data/",
+});
 
 export default function MqttDataPage() {
   return (

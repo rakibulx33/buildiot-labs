@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import { PageHead } from "@/components/ui/PageHead";
-import { canonicalUrl, site } from "@/content/site";
+import { site } from "@/content/site";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Privacy",
-  description: "What BuildIoT Lab collects when you visit this site or send a project brief, and what it does with it.",
-  alternates: { canonical: canonicalUrl("/privacy/") },
-};
+  description:
+    "What BuildIoT Lab collects when you visit this website or send a project brief, how it is used, and how to ask for your information to be deleted.",
+  path: "/privacy/",
+});
 
 export default function PrivacyPage() {
   return (

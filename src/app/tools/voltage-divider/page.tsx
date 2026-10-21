@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import { DividerTool } from "@/components/tools/DividerTool";
 import { ToolPage } from "@/components/tools/ToolPage";
-import { canonicalUrl } from "@/content/site";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Voltage divider for ADCs",
+export const metadata: Metadata = pageMeta({
+  title: "Voltage Divider Calculator for ESP32 ADC",
   description:
-    "Check a resistor divider against the ESP32, ESP32-S3, ESP32-C3, STM32 or ATmega328P ADC range, with current, impedance and standard E12 suggestions.",
-  alternates: { canonical: canonicalUrl("/tools/voltage-divider/") },
-};
+    "Choose resistors to scale a higher voltage into an ESP32 ADC range. Shows whether the signal fits, the divider current and suggested standard resistor pairs.",
+  path: "/tools/voltage-divider/",
+});
 
 export default function DividerPage() {
   return (

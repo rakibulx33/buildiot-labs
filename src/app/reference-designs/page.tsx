@@ -3,14 +3,14 @@ import { DesignCard } from "@/components/designs/DesignCard";
 import { TLink } from "@/components/site/TLink";
 import { PageHead } from "@/components/ui/PageHead";
 import { designs } from "@/content/designs";
-import { canonicalUrl } from "@/content/site";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Reference designs",
+export const metadata: Metadata = pageMeta({
+  title: "ESP32 Reference Designs with Wiring and Parts",
   description:
-    "Open, documented IoT builds with wiring, firmware outlines, design notes and parts lists.",
-  alternates: { canonical: canonicalUrl("/reference-designs/") },
-};
+    "Documented ESP32 reference designs from BuildIoT Lab: wiring tables, firmware outlines, design notes, limits and parts lists. Internal R&D demonstrators.",
+  path: "/reference-designs/",
+});
 
 export default function DesignsPage() {
   return (

@@ -3,6 +3,8 @@ import path from "node:path";
 import type { ComponentType } from "react";
 
 export type NoteMeta = {
+  /** Shorter title for search results and browser tabs. */
+  seoTitle?: string;
   entry: number;
   date: string;
   title: string;

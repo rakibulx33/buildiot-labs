@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { Logo } from "@/components/site/Logo";
 import { TLink } from "@/components/site/TLink";
 import { PageHead } from "@/components/ui/PageHead";
-import { canonicalUrl } from "@/content/site";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "About BuildIoT Lab",
-  description: "How BuildIoT Lab works: hardware, PCB, firmware and software engineering, measured, documented and handed over.",
-  alternates: { canonical: canonicalUrl("/about/") },
-};
+  description:
+    "How BuildIoT Lab works: hardware, PCB, firmware and software engineering that is measured, documented and handed over so your team can maintain it.",
+  path: "/about/",
+});
 
 const PRINCIPLES = [
   { t: "Measure before we claim", d: "A number on this site either has its method published, is labelled as a model, or says its method note is pending." },

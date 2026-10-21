@@ -13,6 +13,8 @@ export type Report = {
   slug: string;
   number: string;
   title: string;
+  /** Shorter title for search results and browser tabs. */
+  seoTitle?: string;
   sector: string;
   status: string;
   platform: string[];
@@ -36,6 +38,7 @@ export const reports: Report[] = [
     slug: "hydroalert",
     number: "BIL-TR-001",
     title: "HydroAlert: leak detection with valve control on the device",
+    seoTitle: "HydroAlert Case Study: Leak Detection",
     sector: "Water management",
     status: "Field stage",
     platform: ["ESP32", "FreeRTOS"],

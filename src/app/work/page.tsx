@@ -2,14 +2,15 @@ import type { Metadata } from "next";
 import { TLink } from "@/components/site/TLink";
 import { PageHead } from "@/components/ui/PageHead";
 import { ReportSheet } from "@/components/work/ReportSheet";
-import { canonicalUrl } from "@/content/site";
 import { reports } from "@/content/work";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Work",
-  description: "Projects from BuildIoT Lab, written up as engineering reports: the problem, what we built, the evidence and its limits.",
-  alternates: { canonical: canonicalUrl("/work/") },
-};
+export const metadata: Metadata = pageMeta({
+  title: "Engineering Case Studies",
+  description:
+    "Engineering reports from BuildIoT Lab: the problem, the approach, the evidence and its limits, with every figure labelled as measured, modelled or unverified.",
+  path: "/work/",
+});
 
 export default function WorkPage() {
   return (

@@ -4,8 +4,9 @@ import { ViewTransition } from "react";
 import { formatDate } from "@/components/objects/NotebookPage";
 import { TLink } from "@/components/site/TLink";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
-import { canonicalUrl, ogImage, site } from "@/content/site";
+import { canonicalUrl, ogImage } from "@/content/site";
 import { allNotes, getNote, noteSlugs } from "@/lib/notes";
+import { pageMeta } from "@/lib/seo";
 
 export const dynamicParams = false;
 
@@ -17,12 +18,13 @@ export async function generateMetadata({ params }: PageProps<"/lab-notes/[slug]"
   const { slug } = await params;
   if (!noteSlugs().includes(slug)) return {};
   const { meta } = await getNote(slug);
-  return {
-    title: meta.title,
+  return pageMeta({
+    title: meta.seoTitle ?? meta.title,
     description: meta.summary,
-    alternates: { canonical: canonicalUrl(`/lab-notes/${slug}/`) },
-    openGraph: { type: "article", publishedTime: meta.date, siteName: site.name, images: [ogImage] },
-  };
+    path: `/lab-notes/${slug}/`,
+    type: "article",
+    publishedTime: meta.date,
+  });
 }
 
 export default async function NotePage({ params }: PageProps<"/lab-notes/[slug]">) {
@@ -38,15 +40,18 @@ export default async function NotePage({ params }: PageProps<"/lab-notes/[slug]"
     headline: meta.title,
     description: meta.summary,
     datePublished: meta.date,
-    author: { "@type": "Organization", name: site.name, url: canonicalUrl("/") },
-    publisher: { "@type": "Organization", name: site.name },
+    dateModified: meta.date,
+    inLanguage: "en",
+    image: ogImage.url,
+    author: { "@id": canonicalUrl("/#organization") },
+    publisher: { "@id": canonicalUrl("/#organization") },
     mainEntityOfPage: canonicalUrl(`/lab-notes/${slug}/`),
   };
 
   return (
     <article className="wrap pb-24 pt-10 sm:pt-14">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <Breadcrumb items={[{ href: "/lab-notes", label: "Lab notes" }]} current={`No. ${entry}`} />
+      <Breadcrumb items={[{ href: "/lab-notes", label: "Lab notes" }]} current={`No. ${entry}`} path={`/lab-notes/${slug}/`} ldName={meta.seoTitle ?? meta.title} />
 
       <div className="mt-8 grid gap-12 lg:grid-cols-12 lg:gap-8">
         <div className="min-w-0 lg:col-span-9">
