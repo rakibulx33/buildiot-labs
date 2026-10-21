@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import { TLink } from "@/components/site/TLink";
 import { PageHead } from "@/components/ui/PageHead";
-import { absoluteUrl } from "@/content/site";
+import { canonicalUrl } from "@/content/site";
 import { tools } from "@/content/tools";
 
 export const metadata: Metadata = {
   title: "Tools",
-  description: "Free engineering calculators from BuildIoT Labs: battery life, voltage dividers for ADCs, and MQTT data use.",
-  alternates: { canonical: absoluteUrl("/tools/") },
+  description: "Free engineering calculators from BuildIoT Lab: battery life, voltage dividers for ADCs, and MQTT data use.",
+  alternates: { canonical: canonicalUrl("/tools/") },
 };
 
 export default function ToolsPage() {

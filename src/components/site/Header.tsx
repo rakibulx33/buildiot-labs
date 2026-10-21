@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { primaryNav, secondaryNav, site } from "@/content/site";
-import { LogoMark, Wordmark } from "./Logo";
+import { Logo, LogoPlate } from "./Logo";
 import { TLink } from "./TLink";
 
 function isActive(pathname: string, href: string) {
@@ -73,8 +73,8 @@ export function Header() {
         Skip to content
       </a>
       <div className="wrap flex h-full items-center gap-6">
-        <TLink href="/" className="shrink-0 rounded-[6px]" aria-label="BuildIoT Labs, home">
-          <Wordmark />
+        <TLink href="/" className="shrink-0 rounded-[6px]" aria-label="BuildIoT Lab, home">
+          <Logo height={42} />
         </TLink>
 
         <nav aria-label="Primary" className="ml-auto hidden lg:block">
@@ -96,7 +96,7 @@ export function Header() {
         <div className="ml-auto flex items-center gap-2 lg:ml-2">
           <TLink href="/contact" className="btn btn-primary btn-sm hidden sm:inline-flex">
             <span className="btn-pad" aria-hidden="true" />
-            Start a brief
+            Start a Project
           </TLink>
           <button
             ref={menuButtonRef}
@@ -129,10 +129,7 @@ export function Header() {
       >
         <div className="wrap flex min-h-full flex-col">
           <div className="flex h-[var(--header-h)] shrink-0 items-center justify-between">
-            <span className="inline-flex items-center gap-2.5 text-silk">
-              <LogoMark />
-              <span className="text-[1.0625rem] font-[650] leading-none [font-stretch:118%]">BuildIoT Labs</span>
-            </span>
+            <LogoPlate height={34} />
             <button type="button" className="menu-close" onClick={() => closeMenu()}>
               Close
             </button>
@@ -180,9 +177,6 @@ export function Header() {
           <div className="menu-foot">
             <a className="link" href={`mailto:${site.email}`}>
               {site.email}
-            </a>
-            <a className="link" href={site.store.url} rel="noopener">
-              Buying parts? Visit {site.store.name}
             </a>
           </div>
         </div>

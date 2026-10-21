@@ -16,6 +16,12 @@ export function Engagements({ headingLevel = 3 }: { headingLevel?: 2 | 3 }) {
               <li key={g}>{g}</li>
             ))}
           </ul>
+          <p className="mt-5 text-sm font-semibold text-ink [font-stretch:106%]">Examples</p>
+          <ul className="mt-2 list-disc space-y-1 pl-5 text-[0.9375rem] leading-relaxed text-ink-2 marker:text-ink-3">
+            {e.examples.map((x) => (
+              <li key={x}>{x}</li>
+            ))}
+          </ul>
           <dl className="mt-6 grid grid-cols-2 gap-4 border-t border-line pt-4 text-sm">
             <div>
               <dt className="text-ink-3">Length</dt>

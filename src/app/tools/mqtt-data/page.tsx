@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import { MqttTool } from "@/components/tools/MqttTool";
 import { ToolPage } from "@/components/tools/ToolPage";
-import { absoluteUrl } from "@/content/site";
+import { canonicalUrl } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "MQTT data budget",
   description:
     "Estimate how much mobile data MQTT devices use per message and per month, with TLS, QoS, keep-alive and reconnect overheads.",
-  alternates: { canonical: absoluteUrl("/tools/mqtt-data/") },
+  alternates: { canonical: canonicalUrl("/tools/mqtt-data/") },
 };
 
 export default function MqttDataPage() {

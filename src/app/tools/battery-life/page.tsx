@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import { BatteryTool } from "@/components/tools/BatteryTool";
 import { ToolPage } from "@/components/tools/ToolPage";
-import { absoluteUrl } from "@/content/site";
+import { canonicalUrl } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "Battery-life estimator",
   description:
     "Estimate how long a duty-cycled IoT node runs on a battery from its sleep current, wake current and reporting interval.",
-  alternates: { canonical: absoluteUrl("/tools/battery-life/") },
+  alternates: { canonical: canonicalUrl("/tools/battery-life/") },
 };
 
 export default function BatteryLifePage() {

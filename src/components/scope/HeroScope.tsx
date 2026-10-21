@@ -193,9 +193,11 @@ export function HeroScope() {
       number={1}
       caption={
         <>
-          Modelled supply current of an ESP32-C3 sensor node that wakes, reads a sensor, joins Wi-Fi and publishes one
-          MQTT message over TLS. Change how often it reports and watch the battery life move. The wake itself never
-          changes; how often you pay for it does. <MethodTag status="model" className="ml-1" />{" "}
+          Illustrative, calculated supply current of an ESP32-C3 sensor node that wakes, reads a sensor, joins Wi-Fi and
+          publishes one MQTT message over TLS. It is not a measurement of a real device. Assumptions: {REFERENCE_SLEEP_UA}{" "}
+          µA deep sleep, {sig(WAKE_MS / 1000, 2)} s awake per report, {Math.round(DEFAULT_USABLE_FRACTION * 100)}% of
+          the battery usable. Change how often it reports and watch the battery life move.{" "}
+          <MethodTag status="model" className="ml-1" />{" "}
           <TLink href="/tools/battery-life" className="link ml-1 whitespace-nowrap">
             Try your own numbers
           </TLink>

@@ -181,10 +181,49 @@ export function PrototypePlate({ className = "" }: Props) {
         </g>
         ))}
       <text x="16" y="340" className="plate-note">
-        Built from stocked modules, so every part on the bill of
+        Built from standard modules, so every part on the bill of
       </text>
       <text x="16" y="358" className="plate-note">
-        materials can be bought again tomorrow.
+        materials can be sourced again.
+      </text>
+    </svg>
+  );
+}
+
+/** A small illustrative board: soldermask, copper routing, vias and pads. Not a real client board. */
+export function PcbPlate({ className = "" }: { className?: string }) {
+  const trace = { fill: "none", stroke: "var(--color-gold)", strokeWidth: 2.4, strokeLinecap: "round", strokeLinejoin: "round" } as const;
+  return (
+    <svg viewBox="0 0 480 360" className={`plate ${className}`} role="img" aria-label="An illustrative circuit board: a microcontroller footprint, routed copper traces, vias and edge connector pads.">
+      <rect x="40" y="40" width="400" height="250" rx="10" fill="var(--color-mask)" />
+      <rect x="150" y="100" width="110" height="110" rx="3" fill="none" stroke="var(--color-silk)" strokeWidth="1.5" />
+      <text x="205" y="160" textAnchor="middle" fontSize="13" fill="var(--color-silk)">MCU</text>
+      {[0, 1, 2, 3, 4, 5].map((i) => (
+        <g key={i}>
+          <rect x={160 + i * 16} y="90" width="8" height="10" fill="var(--color-gold)" />
+          <rect x={160 + i * 16} y="210" width="8" height="10" fill="var(--color-gold)" />
+        </g>
+      ))}
+      <path d="M164 90 V64 H90 V130" {...trace} />
+      <path d="M180 90 V76 H120 V170 H80" {...trace} />
+      <path d="M196 90 V54 H330 V120" {...trace} />
+      <path d="M164 220 V250 H100" {...trace} />
+      <path d="M212 220 V262 H330 V190" {...trace} />
+      <path d="M228 220 V240 H380 V150" {...trace} />
+      {[[90, 130], [330, 120], [100, 250], [330, 190], [380, 150]].map(([x, y]) => (
+        <g key={`${x}-${y}`}>
+          <circle cx={x} cy={y} r="6" fill="var(--color-gold)" />
+          <circle cx={x} cy={y} r="2.4" fill="var(--color-mask)" />
+        </g>
+      ))}
+      {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
+        <rect key={i} x={110 + i * 30} y="290" width="14" height="30" fill="var(--color-gold)" />
+      ))}
+      <text x="16" y="344" className="plate-note">
+        Illustration only: the layers a layout covers, from footprints to
+      </text>
+      <text x="16" y="358" className="plate-note">
+        routing and edge connectors. Not a client board.
       </text>
     </svg>
   );

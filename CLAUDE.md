@@ -34,6 +34,15 @@ npm run lint && npm run typecheck && npm test && npm run build
 - Type uses the `t-*` classes. Archivo's width axis is the expressive one: wide for headings, normal for reading.
 - Monospace (B612 Mono, one weight) is for codes, legends and readout labels only.
 
+## Brand and scope rules (from the developer handoff, `docs/REQUIREMENTS.md`)
+
+- Company name is "BuildIoT Lab" (singular). The domain is buildiotlabs.com (plural), the email contact@buildiotlabs.com. Never write "BuildIoT Labs" as the company name or "buildiotlab.com".
+- Motto: "Engineering Ideas Into Reality." Supporting line: "From Circuit to Cloud — Hardware, Firmware & Software Engineering."
+- No location-led or country-targeted marketing, no local retail or store promotion, no pricing in a local currency.
+- Services are remote deliverables only: designs, source files, documentation, advisory. No installation, distribution or in-house PCB manufacture or assembly.
+- Five service families: IoT Hardware R&D & Design, Custom PCB Design, Embedded Firmware, IoT Software & Cloud, Technical Consulting & Remote Engineering.
+- Canonical URLs always use `canonicalUrl()` (production domain). Preview hosts are `noindex`.
+
 ## Content rules
 
 - Every figure carries a `MethodTag`. A metric becomes `measured` only when its `method` fields (device, conditions, instrument, date) are filled in.

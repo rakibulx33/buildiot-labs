@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import {
   FirmwarePlate,
+  PcbPlate,
   PowerPlate,
   PrototypePlate,
   TelemetryPlate,
@@ -9,20 +10,21 @@ import { TLink } from "@/components/site/TLink";
 import { ActiveWhenVisible } from "@/components/ui/ActiveWhenVisible";
 import { PageHead } from "@/components/ui/PageHead";
 import { services, type ServiceSlug } from "@/content/services";
-import { absoluteUrl } from "@/content/site";
+import { canonicalUrl } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Firmware, low-power design, telemetry pipelines and prototypes for connected devices, or all of them as one end-to-end build.",
-  alternates: { canonical: absoluteUrl("/services/") },
+    "IoT hardware design, custom PCB design, embedded firmware, IoT software and cloud, and technical consulting, delivered remotely.",
+  alternates: { canonical: canonicalUrl("/services/") },
 };
 
 const PLATES: Partial<Record<ServiceSlug, { Plate: (p: { className?: string }) => React.ReactNode; caption: string }>> = {
+  hardware: { Plate: PowerPlate, caption: "A duty-cycled node: short, expensive wakes and long, cheap sleeps." },
+  pcb: { Plate: PcbPlate, caption: "An illustrative board: footprints, routed copper, vias and edge pads." },
   firmware: { Plate: FirmwarePlate, caption: "Tasks on a FreeRTOS timeline, with the watchdog fed at every checkpoint." },
-  power: { Plate: PowerPlate, caption: "A duty-cycled node: short, expensive wakes and long, cheap sleeps." },
-  telemetry: { Plate: TelemetryPlate, caption: "Store and forward: readings queue on the node while the link is down." },
-  prototypes: { Plate: PrototypePlate, caption: "An exploded prototype. Every layer is a stocked, documented part." },
+  software: { Plate: TelemetryPlate, caption: "Store and forward: readings queue on the node while the link is down." },
+  consulting: { Plate: PrototypePlate, caption: "An exploded prototype: enclosure, module, board and battery, each one documented." },
 };
 
 export default function ServicesPage() {
@@ -30,7 +32,7 @@ export default function ServicesPage() {
     <>
       <PageHead
         title="Services"
-        lead="Four kinds of work, usually combined in one project: firmware, power, telemetry and prototypes. Or all of them under one plan, as an end-to-end build."
+        lead="Connected products need hardware, firmware and software that work together. We design the electronics, develop the embedded systems, build the supporting applications and document the handover."
       >
         <nav aria-label="On this page" className="mt-10">
           <ul className="flex flex-wrap gap-2">
@@ -69,7 +71,7 @@ export default function ServicesPage() {
                 </div>
                 <div className="grid content-start gap-10 lg:col-span-6 lg:col-start-7">
                   <div>
-                    <h3 className="t-h4">What we do</h3>
+                    <h3 className="t-h4">Scope and examples</h3>
                     <ul className="tick-list mt-4">
                       {s.includes.map((x) => (
                         <li key={x}>{x}</li>
@@ -77,7 +79,7 @@ export default function ServicesPage() {
                     </ul>
                   </div>
                   <div>
-                    <h3 className="t-h4">What you get</h3>
+                    <h3 className="t-h4">Expected deliverables</h3>
                     <ul className="tick-list mt-4">
                       {s.deliverables.map((x) => (
                         <li key={x}>{x}</li>
@@ -109,9 +111,13 @@ export default function ServicesPage() {
                 </TLink>{" "}
                 is the cheaper first step.
               </p>
+              <p className="mt-4 text-sm text-ink-3">
+                Deliverables are subject to the agreed scope and test criteria. &ldquo;Manufacturing-ready files&rdquo;
+                means digital PCB output; we do not offer manufacturing or assembly.
+              </p>
               <TLink href="/contact" className="btn btn-primary mt-6">
                 <span className="btn-pad" aria-hidden="true" />
-                Start a project brief
+                Start a Project
               </TLink>
             </div>
           </div>

@@ -17,7 +17,7 @@ const SEGMENTS = [
 ] as const;
 
 export function MqttTool() {
-  const [topic, setTopic] = useState("site/dhaka/node-01/telemetry");
+  const [topic, setTopic] = useState("site/plant-01/node-01/telemetry");
   const [sample, setSample] = useState(SAMPLE);
   const [qos, setQos] = useState<Qos>(1);
   const [version, setVersion] = useState<"3.1.1" | "5">("3.1.1");

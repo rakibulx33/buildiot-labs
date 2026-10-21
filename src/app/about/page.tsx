@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import { LogoMark } from "@/components/site/Logo";
+import { Logo } from "@/components/site/Logo";
 import { TLink } from "@/components/site/TLink";
 import { PageHead } from "@/components/ui/PageHead";
-import { absoluteUrl, site } from "@/content/site";
+import { canonicalUrl } from "@/content/site";
 
 export const metadata: Metadata = {
-  title: "About the lab",
-  description: "BuildIoT Labs is the engineering side of BuildIoT BD in Dhaka: firmware, low-power hardware and telemetry, measured and written down.",
-  alternates: { canonical: absoluteUrl("/about/") },
+  title: "About BuildIoT Lab",
+  description: "How BuildIoT Lab works: hardware, PCB, firmware and software engineering, measured, documented and handed over.",
+  alternates: { canonical: canonicalUrl("/about/") },
 };
 
 const PRINCIPLES = [
@@ -22,19 +22,18 @@ const DATASHEET: Array<{ title: string; rows: Row[]; note?: string }> = [
   {
     title: "Recommended operating conditions",
     rows: [
-      ["Projects", "New devices, fixes, reviews, research prototypes"],
-      ["Platforms", "ESP32 family, STM32"],
+      ["Projects", "New devices, design reviews, fixes, research prototypes"],
+      ["Platforms", "ESP32 family, STM32, custom PCBs"],
       ["Data paths", "Wi-Fi, Bluetooth LE, MQTT over TLS, HTTP"],
-      ["Location", "Dhaka in person, anywhere remotely"],
+      ["Delivery", "Remote: designs, source files, documentation and advice"],
     ],
   },
   {
     title: "Characteristics",
     rows: [
-      ["Reply to a brief", "Usually within one working day"],
       ["Written scope before work starts", "Always"],
+      ["Handover documentation with every delivery", "Always"],
       ["Method published with each measured number", "Always"],
-      ["Source and build steps handed over", "Always"],
     ],
   },
   {
@@ -52,8 +51,8 @@ export default function AboutPage() {
   return (
     <>
       <PageHead
-        title="About the lab"
-        lead={`BuildIoT Labs is the engineering side of ${site.store.name}, an electronics parts store in Dhaka. The store sells the parts; the lab designs, builds and measures the devices made from them.`}
+        title="About BuildIoT Lab"
+        lead="BuildIoT Lab is an IoT and embedded product engineering team. We design the electronics, develop the embedded systems, build the supporting applications and document the handover."
       />
 
       <section aria-labelledby="why-title" className="pb-20">
@@ -74,24 +73,25 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section aria-labelledby="store-title" className="pb-20">
+      <section aria-labelledby="team-title" className="pb-20">
         <div className="wrap grid gap-10 border-t border-line pt-16 lg:grid-cols-12 lg:gap-8">
-          <h2 id="store-title" className="t-h2 lg:col-span-4">
-            Next to a parts store
+          <h2 id="team-title" className="t-h2 lg:col-span-4">
+            Engineering team
           </h2>
           <div className="grid gap-5 text-[1.0625rem] leading-relaxed text-ink-2 lg:col-span-7 lg:col-start-6">
             <p>
-              Working beside {site.store.name} means we design with parts that are actually in stock in Bangladesh, and
-              that you can order again next month. Every{" "}
-              <TLink href="/reference-designs" className="link">
-                reference design
-              </TLink>{" "}
-              links each of its parts to the store.
+              Four disciplines work together on every connected product: hardware and PCB design, embedded firmware,
+              IoT software and cloud, and technical consulting.
+            </p>
+            <p className="rounded-[8px] border border-line bg-sheet p-4 text-[0.9375rem]">
+              Team profiles are being prepared. We publish a name, role and project experience only with that
+              person&rsquo;s consent, and only what can be verified. Until then, ask for the engineers who would work on
+              your project in your first reply.
             </p>
             <p>
-              <a className="link" href={site.store.url} rel="noopener">
-                Visit {site.store.name}
-              </a>
+              <TLink href="/contact" className="link">
+                Start a Project
+              </TLink>
             </p>
           </div>
         </div>
@@ -118,9 +118,9 @@ export default function AboutPage() {
           <div className="sheet mx-auto max-w-[56rem] overflow-hidden">
             <div className="flex flex-wrap items-center justify-between gap-4 border-b-[3px] border-double border-line px-5 py-4 sm:px-8">
               <div className="flex items-center gap-2.5">
-                <LogoMark size={24} />
+                <Logo height={26} />
                 <h2 id="datasheet-title" className="text-[0.9375rem] font-semibold [font-stretch:110%]">
-                  BuildIoT Labs, studio datasheet
+                  Engineering datasheet
                 </h2>
               </div>
               <p className="font-mono text-[0.8125rem] text-ink-3">Rev 2.0</p>

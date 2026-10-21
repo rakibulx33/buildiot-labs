@@ -3,13 +3,13 @@ import { DesignCard } from "@/components/designs/DesignCard";
 import { TLink } from "@/components/site/TLink";
 import { PageHead } from "@/components/ui/PageHead";
 import { designs } from "@/content/designs";
-import { absoluteUrl, site } from "@/content/site";
+import { canonicalUrl } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "Reference designs",
   description:
-    "Open, documented IoT builds with wiring, firmware outlines, design notes and parts lists stocked at BuildIoT BD.",
-  alternates: { canonical: absoluteUrl("/reference-designs/") },
+    "Open, documented IoT builds with wiring, firmware outlines, design notes and parts lists.",
+  alternates: { canonical: canonicalUrl("/reference-designs/") },
 };
 
 export default function DesignsPage() {
@@ -17,7 +17,7 @@ export default function DesignsPage() {
     <>
       <PageHead
         title="Reference designs"
-        lead="Small, documented builds you can copy. Each one has a wiring table, a firmware outline, design notes, its limits, and a parts list you can order from our sister store."
+        lead="Small, documented builds you can copy. Each one has a wiring table, a firmware outline, design notes, its limits, and a parts list."
       />
       <section aria-label="Designs" className="pb-20">
         <div className="wrap grid gap-14 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
@@ -40,11 +40,8 @@ export default function DesignsPage() {
                 on our bench, with the method published.
               </p>
               <p>
-                Every part is linked to its page at{" "}
-                <a className="link" href={site.store.url} rel="noopener">
-                  {site.store.name}
-                </a>
-                , which delivers across Bangladesh. Need a design adapted for your product?{" "}
+                Reference designs are internal R&amp;D demonstrators, kept separate from paid client work. Need one
+                developed further for your product?{" "}
                 <TLink href="/contact" className="link">
                   Send us a brief
                 </TLink>

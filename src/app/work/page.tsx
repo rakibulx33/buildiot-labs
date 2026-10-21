@@ -2,21 +2,21 @@ import type { Metadata } from "next";
 import { TLink } from "@/components/site/TLink";
 import { PageHead } from "@/components/ui/PageHead";
 import { ReportSheet } from "@/components/work/ReportSheet";
-import { absoluteUrl } from "@/content/site";
+import { canonicalUrl } from "@/content/site";
 import { reports } from "@/content/work";
 
 export const metadata: Metadata = {
   title: "Work",
-  description: "Client projects from BuildIoT Labs, written up as test reports: the problem, what we built and what we measured.",
-  alternates: { canonical: absoluteUrl("/work/") },
+  description: "Projects from BuildIoT Lab, written up as engineering reports: the problem, what we built, the evidence and its limits.",
+  alternates: { canonical: canonicalUrl("/work/") },
 };
 
 export default function WorkPage() {
   return (
     <>
       <PageHead
-        title="Work"
-        lead="Client projects, written up as test reports: the problem, what we built, and what we measured. Public reports stay at a high level; clients see everything."
+        title="Work and case studies"
+        lead="Projects written up as engineering reports: the problem, what we built, the evidence, and its limits. Public reports stay at a high level, and we publish client details only with written permission."
       />
       <section aria-label="Reports" className="pb-24">
         <div className="wrap grid gap-10 lg:grid-cols-12 lg:gap-8">
@@ -45,7 +45,7 @@ export default function WorkPage() {
               </p>
               <TLink href="/contact" className="btn btn-primary btn-sm mt-4">
                 <span className="btn-pad" aria-hidden="true" />
-                Start a brief
+                Start a Project
               </TLink>
             </div>
           </aside>

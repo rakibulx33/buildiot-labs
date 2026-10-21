@@ -2,18 +2,18 @@ import type { Metadata } from "next";
 import { Engagements } from "@/components/home/Engagements";
 import { TLink } from "@/components/site/TLink";
 import { PageHead } from "@/components/ui/PageHead";
-import { absoluteUrl } from "@/content/site";
+import { canonicalUrl } from "@/content/site";
 
 export const metadata: Metadata = {
-  title: "Pricing",
-  description: "Three ways to work with BuildIoT Labs: a fixed-price review, a build sprint, or a monthly retainer. Quoted in taka or US dollars.",
-  alternates: { canonical: absoluteUrl("/pricing/") },
+  title: "Engagement models",
+  description: "Three ways to work with BuildIoT Lab: a review, a scoped build sprint, or a retainer. Every engagement is quoted as a written proposal after we read your brief.",
+  alternates: { canonical: canonicalUrl("/pricing/") },
 };
 
 const DRIVERS = [
   { t: "How much is unknown", d: "A device that has never been built carries more risk than a fix to one that works. We price that honestly, or suggest a short review first to shrink it." },
   { t: "How it's powered", d: "A mains device is simpler than one that must last a year on a cell. Battery targets add measurement and design time." },
-  { t: "How many and how far", d: "One prototype on a bench differs from a pilot of fifty in the field. Field work adds travel, installation and support." },
+  { t: "How many boards, how many features", d: "A single-sided prototype differs from a multilayer board with several firmware and cloud components. More parts add design, review and documentation effort." },
   { t: "What already exists", d: "Working firmware, a schematic or a server you already run all lower the cost. Tell us what you have." },
 ];
 
@@ -21,8 +21,8 @@ export default function PricingPage() {
   return (
     <>
       <PageHead
-        title="Pricing"
-        lead="Three shapes of engagement. We quote after reading your brief: a fixed price for reviews and sprints, a monthly rate for retainers, in taka or US dollars."
+        title="Engagement models"
+        lead="Three shapes of engagement. We quote after reading your brief, as a written proposal with scope, milestones and acceptance criteria. We publish no universal prices or timelines because they depend on the work."
       />
       <section aria-label="Engagement models" className="pb-20">
         <div className="wrap">
@@ -55,11 +55,11 @@ export default function PricingPage() {
             <ol className="step-list text-[1.0625rem] text-ink-2">
               <li>You send a brief. Rough answers are fine.</li>
               <li>We reply with questions, then a written scope with the price, milestones and test criteria.</li>
-              <li>Sprints are paid by milestone as written in the scope; retainers monthly in advance.</li>
+              <li>Payment terms for sprints and retainers are written into the scope before work begins.</li>
             </ol>
             <TLink href="/contact" className="btn btn-primary mt-8">
               <span className="btn-pad" aria-hidden="true" />
-              Start a project brief
+              Start a Project
             </TLink>
           </div>
         </div>

@@ -17,17 +17,17 @@ export function BriefBand() {
             Tell us what you&rsquo;re building.
           </h2>
           <p className="mt-5 max-w-[34rem] text-[1.0625rem] leading-relaxed text-silk/80">
-            A short brief is enough to start. We reply by email with questions, a first plan, or an honest
-            &ldquo;this isn&rsquo;t for us.&rdquo;
+            Have a device, a design challenge, or a connected product idea? Share a short technical brief and we&rsquo;ll
+            discuss the next engineering step.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-4 md:col-span-4 md:justify-end">
           <TLink href="/contact" className="btn btn-silk">
             <span className="btn-pad" aria-hidden="true" />
-            Start a project brief
+            Start a Project
           </TLink>
           <a className="link text-silk" href={`mailto:${site.email}`}>
-            or email us
+            or email {site.email}
           </a>
         </div>
         <svg className="board-band-traces" viewBox="0 0 400 120" preserveAspectRatio="none" aria-hidden="true">

@@ -4,7 +4,7 @@ import { ViewTransition } from "react";
 import { formatDate } from "@/components/objects/NotebookPage";
 import { TLink } from "@/components/site/TLink";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
-import { absoluteUrl, ogImage, site } from "@/content/site";
+import { canonicalUrl, ogImage, site } from "@/content/site";
 import { allNotes, getNote, noteSlugs } from "@/lib/notes";
 
 export const dynamicParams = false;
@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: PageProps<"/lab-notes/[slug]"
   return {
     title: meta.title,
     description: meta.summary,
-    alternates: { canonical: absoluteUrl(`/lab-notes/${slug}/`) },
+    alternates: { canonical: canonicalUrl(`/lab-notes/${slug}/`) },
     openGraph: { type: "article", publishedTime: meta.date, siteName: site.name, images: [ogImage] },
   };
 }
@@ -38,9 +38,9 @@ export default async function NotePage({ params }: PageProps<"/lab-notes/[slug]"
     headline: meta.title,
     description: meta.summary,
     datePublished: meta.date,
-    author: { "@type": "Organization", name: site.name, url: absoluteUrl("/") },
+    author: { "@type": "Organization", name: site.name, url: canonicalUrl("/") },
     publisher: { "@type": "Organization", name: site.name },
-    mainEntityOfPage: absoluteUrl(`/lab-notes/${slug}/`),
+    mainEntityOfPage: canonicalUrl(`/lab-notes/${slug}/`),
   };
 
   return (
@@ -85,7 +85,7 @@ export default async function NotePage({ params }: PageProps<"/lab-notes/[slug]"
               </p>
               <TLink href="/contact" className="btn btn-primary btn-sm mt-4">
                 <span className="btn-pad" aria-hidden="true" />
-                Start a brief
+                Start a Project
               </TLink>
             </div>
           </div>

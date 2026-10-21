@@ -5,7 +5,7 @@ import { TLink } from "@/components/site/TLink";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { MethodTag } from "@/components/ui/MethodTag";
 import { ReportFields, ReportHead } from "@/components/work/ReportSheet";
-import { absoluteUrl } from "@/content/site";
+import { canonicalUrl } from "@/content/site";
 import { getReport, reports } from "@/content/work";
 
 export const dynamicParams = false;
@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: PageProps<"/work/[slug]">): P
   return {
     title: report.title,
     description: report.summary,
-    alternates: { canonical: absoluteUrl(`/work/${report.slug}/`) },
+    alternates: { canonical: canonicalUrl(`/work/${report.slug}/`) },
   };
 }
 
@@ -112,7 +112,7 @@ export default async function ReportPage({ params }: PageProps<"/work/[slug]">) 
 
             <div className="report-section">
               <h2 className="report-h2">
-                <span className="report-num">4</span>Where it stands
+                <span className="report-num">4</span>Project status and limitations
               </h2>
               <p className="max-w-[44rem] text-[1.0625rem] leading-relaxed text-ink-2">{report.outcome}</p>
             </div>
@@ -120,7 +120,7 @@ export default async function ReportPage({ params }: PageProps<"/work/[slug]">) 
             <footer className="mt-12 flex flex-wrap items-end justify-between gap-6 border-t border-line pt-6">
               <div>
                 <p className="text-sm text-ink-3">Issued by</p>
-                <p className="mt-1 font-semibold [font-stretch:110%]">BuildIoT Labs, Dhaka</p>
+                <p className="mt-1 font-semibold [font-stretch:110%]">BuildIoT Lab</p>
               </div>
               <p className="font-mono text-sm text-ink-3">{report.number}</p>
             </footer>
@@ -131,7 +131,7 @@ export default async function ReportPage({ params }: PageProps<"/work/[slug]">) 
       <div className="mt-12 flex flex-wrap items-center gap-6">
         <TLink href="/contact" className="btn btn-primary">
           <span className="btn-pad" aria-hidden="true" />
-          Start a project brief
+          Start a Project
         </TLink>
         <TLink href="/work" transitionTypes={["drill"]} className="link font-medium">
           Back to all work

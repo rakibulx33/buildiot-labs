@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import { NoteCard } from "@/components/notes/NoteCard";
 import { PageHead } from "@/components/ui/PageHead";
-import { absoluteUrl } from "@/content/site";
+import { canonicalUrl } from "@/content/site";
 import { allNotes } from "@/lib/notes";
 
 export const metadata: Metadata = {
   title: "Lab notes",
-  description: "Engineering notes from BuildIoT Labs on low-power design, ESP32 firmware, ADCs, MQTT and devices that survive load-shedding.",
-  alternates: { canonical: absoluteUrl("/lab-notes/") },
+  description: "Engineering notes from BuildIoT Lab on low-power design, ESP32 firmware, ADCs, MQTT and devices that survive load-shedding.",
+  alternates: { canonical: canonicalUrl("/lab-notes/") },
 };
 
 export default async function NotesPage() {

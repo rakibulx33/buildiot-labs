@@ -3,7 +3,7 @@ export type MetricStatus = "measured" | "model" | "pending";
 const LABEL: Record<MetricStatus, string> = {
   measured: "Measured",
   model: "Model",
-  pending: "Method note pending",
+  pending: "Unverified: method note pending",
 };
 
 /** Says what kind of number sits next to it. See /methods. */

@@ -4,66 +4,64 @@ import { addTransitionType, startTransition, useEffect, useId, useRef, useState,
 import { site } from "@/content/site";
 
 type Brief = {
-  kind: string;
+  services: string[];
+  stage: string;
   description: string;
-  mcu: string;
-  links: string[];
-  power: string;
-  quantity: string;
   timeline: string;
   budget: string;
+  nda: boolean;
   name: string;
   email: string;
   company: string;
-  phone: string;
   website: string; // honeypot
 };
 
 const EMPTY: Brief = {
-  kind: "",
+  services: [],
+  stage: "",
   description: "",
-  mcu: "",
-  links: [],
-  power: "",
-  quantity: "",
   timeline: "",
   budget: "",
+  nda: false,
   name: "",
   email: "",
   company: "",
-  phone: "",
   website: "",
 };
 
-const STEPS = ["The project", "The hardware", "Scale and timing", "About you"] as const;
+const STEPS = ["The project", "Timing and budget", "About you"] as const;
 
-const KINDS = [
-  { value: "New device", hint: "Something that doesn't exist yet" },
-  { value: "Fix or improve a device", hint: "Battery, crashes, data loss" },
-  { value: "Review", hint: "A measured second opinion" },
-  { value: "Research prototype", hint: "For a lab or research group" },
+const SERVICES = [
+  "Hardware R&D",
+  "PCB design",
+  "Firmware",
+  "IoT software and cloud",
+  "Consulting",
+  "Unsure",
 ];
+const STAGES = ["Idea", "Existing design", "Prototype", "Pilot", "Product in field"];
+const TIMELINES = ["Flexible", "2\u20134 weeks", "1\u20133 months", "3+ months"];
+const BUDGETS = ["Under USD 2,000", "USD 2,000\u201310,000", "USD 10,000\u201350,000", "Over USD 50,000", "Prefer to discuss"];
+
+const LIMITS = { name: [2, 100], company: [0, 120], description: [30, 4000] } as const;
 
 const ENDPOINT = process.env.NEXT_PUBLIC_FORM_ENDPOINT || "";
 
 function briefText(b: Brief): string {
   const line = (k: string, v: string) => (v ? `${k}: ${v}` : null);
   return [
-    line("Project", b.kind),
+    line("Services", b.services.join(", ")),
+    line("Project stage", b.stage),
     "",
-    b.description,
+    b.description.trim(),
     "",
-    line("Microcontroller", b.mcu),
-    line("Connectivity", b.links.join(", ")),
-    line("Power", b.power),
-    line("Quantity", b.quantity),
     line("Timeline", b.timeline),
-    line("Budget", b.budget),
+    line("Budget range", b.budget),
+    line("NDA required", b.nda ? "Yes" : ""),
     "",
-    line("Name", b.name),
-    line("Email", b.email),
-    line("Company", b.company),
-    line("Phone or WhatsApp", b.phone),
+    line("Name", b.name.trim()),
+    line("Email", b.email.trim()),
+    line("Company or project", b.company.trim()),
   ]
     .filter((x) => x !== null)
     .join("\n");
@@ -99,13 +97,17 @@ export function IntakeForm() {
   const validate = (s: number): Record<string, string> => {
     const e: Record<string, string> = {};
     if (s === 0) {
-      if (!brief.kind) e.kind = "Choose the kind of project.";
-      if (brief.description.trim().length < 20)
-        e.description = "Describe the device and the problem in a sentence or two (at least 20 characters).";
+      if (brief.services.length === 0) e.services = "Choose at least one service, or \u201CUnsure\u201D.";
+      const n = brief.description.trim().length;
+      if (n < LIMITS.description[0])
+        e.description = `Describe the device and the problem in a few sentences (${LIMITS.description[0]} characters or more; you have ${n}).`;
+      else if (n > LIMITS.description[1]) e.description = `Please keep the brief under ${LIMITS.description[1]} characters.`;
     }
-    if (s === 3) {
-      if (!brief.name.trim()) e.name = "Add your name so we know who to reply to.";
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(brief.email.trim())) e.email = "Add an email address we can reply to.";
+    if (s === 2) {
+      const n = brief.name.trim().length;
+      if (n < LIMITS.name[0] || n > LIMITS.name[1]) e.name = "Add your full name (2 to 100 characters).";
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(brief.email.trim())) e.email = "Add a work email address we can reply to.";
+      if (brief.company.trim().length > LIMITS.company[1]) e.company = "Keep this under 120 characters.";
     }
     return e;
   };
@@ -136,21 +138,21 @@ export function IntakeForm() {
       go(step + 1);
       return;
     }
-    const e = validate(3);
+    const e = validate(2);
     if (Object.keys(e).length) {
       setErrors(e);
       focusFirstError(e);
       return;
     }
     if (brief.website) return; // a bot filled the hidden field
-    const subject = `Project brief: ${brief.kind}, ${brief.name}`;
+    const subject = `Project brief: ${brief.services.join(", ")}, ${brief.name.trim()}`;
     if (ENDPOINT) {
       setStatus("sending");
       try {
         const res = await fetch(ENDPOINT, {
           method: "POST",
           headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify({ ...brief, links: brief.links.join(", "), _subject: subject, message: briefText(brief) }),
+          body: JSON.stringify({ ...brief, services: brief.services.join(", "), _subject: subject, message: briefText(brief) }),
         });
         if (!res.ok) throw new Error(String(res.status));
         startTransition(() => {
@@ -184,11 +186,11 @@ export function IntakeForm() {
       <ViewTransition enter={{ "form-next": "step-in-next", default: "none" }} default="none">
         <div className="intake-done" role="status">
           <span className="intake-done-pad" aria-hidden="true" />
-          <h2 className="t-h2 mt-6">{status === "sent-api" ? "Brief received." : "Your email app should open now."}</h2>
+          <h2 className="t-h2 mt-6">{status === "sent-api" ? "Brief sent." : "Your email app should open now."}</h2>
           <p className="mt-4 max-w-[34rem] text-[1.0625rem] leading-relaxed text-ink-2">
             {status === "sent-api"
-              ? "We reply by email, usually within one working day, with questions or a first plan."
-              : `The brief is filled in and addressed to ${site.email}. Press send there and we'll reply by email, usually within one working day.`}
+              ? "Your brief reached our inbox. We reply by email with questions or a first plan."
+              : `The brief is filled in and addressed to ${site.email}. It has not been sent until you press send in your email app. We then reply by email.`}
           </p>
           {status === "sent-mail" ? (
             <div className="mt-6 flex flex-wrap items-center gap-4">
@@ -253,33 +255,53 @@ export function IntakeForm() {
 
           {step === 0 ? (
             <div className="mt-6 grid gap-7">
-              <div role="radiogroup" aria-label="Kind of project" aria-describedby={described("kind")} className="grid gap-3 sm:grid-cols-2">
-                {KINDS.map((k) => (
-                  <label key={k.value} className="option-card">
-                    <input type="radio" name="kind" value={k.value} checked={brief.kind === k.value} onChange={() => set("kind", k.value)} />
-                    <span>
-                      <span className="block font-semibold [font-stretch:106%]">{k.value}</span>
-                      <span className="mt-0.5 block text-sm text-ink-3">{k.hint}</span>
-                    </span>
-                  </label>
-                ))}
-              </div>
-              {err("kind")}
+              <fieldset className="grid gap-3" aria-describedby={described("services")}>
+                <legend className="intake-label">Service needed (choose any that apply)</legend>
+                <div className="flex flex-wrap gap-2">
+                  {SERVICES.map((o) => (
+                    <label key={o} className="option-chip">
+                      <input
+                        type="checkbox"
+                        name="services"
+                        checked={brief.services.includes(o)}
+                        onChange={(e) =>
+                          set(
+                            "services",
+                            e.target.checked
+                              ? o === "Unsure"
+                                ? ["Unsure"]
+                                : [...brief.services.filter((x) => x !== "Unsure"), o]
+                              : brief.services.filter((x) => x !== o),
+                          )
+                        }
+                      />
+                      <span>{o}</span>
+                    </label>
+                  ))}
+                </div>
+                {err("services")}
+              </fieldset>
+              <ChipGroup label="Project stage (optional)" name="stage" options={STAGES} value={brief.stage} onChange={(v) => set("stage", v)} />
               <div className="grid gap-2">
                 <label htmlFor={`${uid}-desc`} className="intake-label">
-                  What should the device do, and what&rsquo;s in the way?
+                  Technical brief
                 </label>
                 <textarea
                   id={`${uid}-desc`}
                   name="description"
-                  rows={5}
+                  rows={6}
+                  maxLength={LIMITS.description[1]}
                   className="intake-input"
                   value={brief.description}
                   aria-invalid={errors.description ? true : undefined}
-                  aria-describedby={described("description")}
+                  aria-describedby={[`${uid}-desc-hint`, described("description")].filter(Boolean).join(" ")}
                   placeholder="For example: a tank-level sensor for 40 sites that must run a year on batteries and report over LTE."
                   onChange={(e) => set("description", e.target.value)}
                 />
+                <p id={`${uid}-desc-hint`} className="text-sm text-ink-3">
+                  {brief.description.trim().length} / {LIMITS.description[1]} characters, 30 minimum. Please don&rsquo;t paste
+                  unpublished schematics or confidential files here; we&rsquo;ll agree how to share them first.
+                </p>
                 {err("description")}
               </div>
             </div>
@@ -287,48 +309,23 @@ export function IntakeForm() {
 
           {step === 1 ? (
             <div className="mt-6 grid gap-7">
-              <ChipGroup label="Microcontroller" name="mcu" options={["ESP32 family", "STM32", "Something else", "Not sure yet"]} value={brief.mcu} onChange={(v) => set("mcu", v)} />
-              <fieldset className="grid gap-3">
-                <legend className="intake-label">Connectivity, any that apply</legend>
-                <div className="flex flex-wrap gap-2">
-                  {["Wi-Fi", "Bluetooth LE", "LoRa", "Cellular", "Ethernet", "Not sure yet"].map((o) => (
-                    <label key={o} className="option-chip">
-                      <input
-                        type="checkbox"
-                        name="links"
-                        checked={brief.links.includes(o)}
-                        onChange={(e) => set("links", e.target.checked ? [...brief.links, o] : brief.links.filter((x) => x !== o))}
-                      />
-                      <span>{o}</span>
-                    </label>
-                  ))}
-                </div>
-              </fieldset>
-              <ChipGroup label="Power" name="power" options={["Mains", "Battery", "Solar", "Not sure yet"]} value={brief.power} onChange={(v) => set("power", v)} />
+              <ChipGroup label="Timeline (optional)" name="timeline" options={TIMELINES} value={brief.timeline} onChange={(v) => set("timeline", v)} />
+              <ChipGroup label="Budget range (optional)" name="budget" options={BUDGETS} value={brief.budget} onChange={(v) => set("budget", v)} />
+              <label className="option-chip w-fit">
+                <input type="checkbox" name="nda" checked={brief.nda} onChange={(e) => set("nda", e.target.checked)} />
+                <span>An NDA is required before we share design files</span>
+              </label>
+              <p className="text-sm text-ink-3">
+                All optional. You never have to disclose a budget; &ldquo;Prefer to discuss&rdquo; is a fine answer.
+              </p>
             </div>
           ) : null}
 
           {step === 2 ? (
-            <div className="mt-6 grid gap-7">
-              <ChipGroup label="How many units" name="quantity" options={["1 to 10", "10 to 100", "100 to 1,000", "Over 1,000"]} value={brief.quantity} onChange={(v) => set("quantity", v)} />
-              <ChipGroup label="When you need it" name="timeline" options={["As soon as possible", "Within 3 months", "3 to 6 months", "Just exploring"]} value={brief.timeline} onChange={(v) => set("timeline", v)} />
-              <ChipGroup
-                label="Budget"
-                name="budget"
-                options={["Under ৳1 lakh", "৳1 to 5 lakh", "৳5 to 20 lakh", "Over ৳20 lakh", "Budget in USD", "Not sure yet"]}
-                value={brief.budget}
-                onChange={(v) => set("budget", v)}
-              />
-              <p className="text-sm text-ink-3">All optional. Rough answers help us reply with something useful.</p>
-            </div>
-          ) : null}
-
-          {step === 3 ? (
             <div className="mt-6 grid gap-5 sm:grid-cols-2">
-              <TextField id={`${uid}-name`} name="name" label="Your name" autoComplete="name" value={brief.name} error={errors.name} errorId={described("name")} onChange={(v) => set("name", v)} />
-              <TextField id={`${uid}-email`} name="email" type="email" label="Email" autoComplete="email" value={brief.email} error={errors.email} errorId={described("email")} onChange={(v) => set("email", v)} />
-              <TextField id={`${uid}-company`} name="company" label="Company or lab (optional)" autoComplete="organization" value={brief.company} onChange={(v) => set("company", v)} />
-              <TextField id={`${uid}-phone`} name="phone" type="tel" label="Phone or WhatsApp (optional)" autoComplete="tel" value={brief.phone} onChange={(v) => set("phone", v)} />
+              <TextField id={`${uid}-name`} name="name" label="Full name" autoComplete="name" maxLength={LIMITS.name[1]} value={brief.name} error={errors.name} errorId={described("name")} onChange={(v) => set("name", v)} />
+              <TextField id={`${uid}-email`} name="email" type="email" label="Work email" autoComplete="email" value={brief.email} error={errors.email} errorId={described("email")} onChange={(v) => set("email", v)} />
+              <TextField id={`${uid}-company`} name="company" label="Company or project name (optional)" autoComplete="organization" maxLength={LIMITS.company[1]} value={brief.company} error={errors.company} errorId={described("company")} onChange={(v) => set("company", v)} />
             </div>
           ) : null}
         </fieldset>
@@ -336,7 +333,7 @@ export function IntakeForm() {
 
       {status === "failed" ? (
         <p className="intake-error mt-6" role="alert">
-          The brief didn&rsquo;t send. Email it to {site.email} instead, or try again in a minute.
+          The brief was not delivered. Nothing has been sent. Email it to {site.email} instead, or try again in a minute.
         </p>
       ) : null}
 
@@ -393,6 +390,7 @@ function TextField({
   onChange,
   type = "text",
   autoComplete,
+  maxLength,
   error,
   errorId,
 }: {
@@ -403,6 +401,7 @@ function TextField({
   onChange: (v: string) => void;
   type?: string;
   autoComplete?: string;
+  maxLength?: number;
   error?: string;
   errorId?: string;
 }) {
@@ -416,6 +415,7 @@ function TextField({
         name={name}
         type={type}
         autoComplete={autoComplete}
+        maxLength={maxLength}
         className="intake-input"
         value={value}
         aria-invalid={error ? true : undefined}

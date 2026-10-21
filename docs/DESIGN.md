@@ -12,7 +12,9 @@ The page is a lab bench seen from above. The background is a grey anti-static ma
 | Tools and the hero scope | A bench instrument with a dark faceplate and screen | `Instrument`, `.screen` |
 | Call to action | A maroon board band with silkscreen text | `BriefBand` |
 
-The maroon is BuildIoT BD's brand colour, used here as soldermask, so the store and the lab read as one family.
+The header shows the official logo only, with no wordmark beside it. On dark panels the logo sits on a paper-coloured plate (`LogoPlate`) so the maroon artwork stays readable.
+
+The maroon matches the BuildIoT Lab logo and is used here as soldermask.
 
 ## Colour
 

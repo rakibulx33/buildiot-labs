@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { Header } from "@/components/site/Header";
-import { absoluteUrl, ogImage, site } from "@/content/site";
+import { absoluteUrl, isPreview, ogImage, site } from "@/content/site";
 import "./globals.css";
 
 const archivo = localFont({
@@ -24,11 +24,13 @@ const b612 = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL(absoluteUrl("/")),
   title: {
-    default: "BuildIoT Labs: firmware, low-power hardware and telemetry, Dhaka",
-    template: "%s | BuildIoT Labs",
+    default: `BuildIoT Lab | ${site.motto.replace(/\.$/, "")}`,
+    template: "%s | BuildIoT Lab",
   },
   description: site.description,
   applicationName: site.name,
+  // The GitHub Pages address is a preview; only buildiotlabs.com is indexed.
+  robots: isPreview ? { index: false, follow: false } : undefined,
   openGraph: {
     type: "website",
     siteName: site.name,

@@ -54,7 +54,7 @@ export const reports: Report[] = [
       { label: "Leak prediction accuracy", value: "96.7", unit: "%", status: "pending" },
     ],
     outcome:
-      "The node runs at field stage. We will publish the measurement methods behind the numbers above before calling them measured.",
+      "Project status: field stage. The two figures above are unverified: we have not yet published device revision, setup, conditions, sample count, method or date for them, so treat them as unconfirmed and do not rely on them. They will be marked measured only once that evidence is published.",
   },
 ];
 

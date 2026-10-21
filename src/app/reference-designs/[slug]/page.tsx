@@ -5,7 +5,7 @@ import { DesignBoard } from "@/components/designs/DesignCard";
 import { TLink } from "@/components/site/TLink";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { designs, getDesign } from "@/content/designs";
-import { absoluteUrl, site } from "@/content/site";
+import { canonicalUrl } from "@/content/site";
 
 export const dynamicParams = false;
 
@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: PageProps<"/reference-designs
   return {
     title: `${design.name}, reference design`,
     description: design.summary,
-    alternates: { canonical: absoluteUrl(`/reference-designs/${design.slug}/`) },
+    alternates: { canonical: canonicalUrl(`/reference-designs/${design.slug}/`) },
   };
 }
 
@@ -31,7 +31,7 @@ export default async function DesignPage({ params }: PageProps<"/reference-desig
 
   const partsText = [
     `${design.code} ${design.name}, parts list`,
-    ...design.parts.map((p) => `${p.qty} x ${p.name}${p.optional ? " (optional)" : ""}: ${p.url}`),
+    ...design.parts.map((p) => `${p.qty} x ${p.name}${p.optional ? " (optional)" : ""}: ${p.role}`),
   ].join("\n");
 
   return (
@@ -88,9 +88,6 @@ export default async function DesignPage({ params }: PageProps<"/reference-desig
                         Qty
                       </th>
                       <th scope="col">Role</th>
-                      <th scope="col">
-                        <span className="sr-only">Store link</span>
-                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -102,11 +99,6 @@ export default async function DesignPage({ params }: PageProps<"/reference-desig
                         </th>
                         <td className="text-right font-mono tabular-nums">{p.qty}</td>
                         <td className="text-ink-2">{p.role}</td>
-                        <td className="whitespace-nowrap text-right">
-                          <a className="link text-sm" href={p.url} rel="noopener">
-                            View in store<span className="sr-only">: {p.name}</span>
-                          </a>
-                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -115,9 +107,6 @@ export default async function DesignPage({ params }: PageProps<"/reference-desig
             </div>
             <div className="mt-5 flex flex-wrap items-center gap-4">
               <CopyParts text={partsText} />
-              <a className="link text-[0.9375rem] font-medium" href={site.store.quoteUrl} rel="noopener">
-                Request a quote from {site.store.name}
-              </a>
             </div>
           </section>
 
@@ -192,21 +181,19 @@ export default async function DesignPage({ params }: PageProps<"/reference-desig
         <aside className="min-w-0 lg:col-span-3 lg:col-start-10">
           <div className="space-y-8 lg:sticky lg:top-[calc(var(--header-h)+2rem)]">
             <div className="board-note on-dark">
-              <p className="text-sm font-semibold text-silk/75 [font-stretch:92%]">Parts for this build</p>
+              <p className="text-sm font-semibold text-silk/75 [font-stretch:92%]">Reference design</p>
               <p className="mt-2 text-[0.9375rem] leading-relaxed text-silk">
-                Every part above is stocked at {site.store.name}, with cash on delivery to all 64 districts.
+                A documented demonstrator, not client work and not a finished product. Check every part against its
+                datasheet before you build.
               </p>
-              <a className="btn btn-silk btn-sm mt-4" href={site.store.url} rel="noopener">
-                Visit {site.store.name}
-              </a>
             </div>
             <div>
               <p className="text-sm font-semibold [font-stretch:106%]">Need it adapted?</p>
               <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-2">
-                We turn reference designs into products: battery operation, enclosures, a dashboard, a small batch.
+                We can develop a reference design further: low-power operation, a custom PCB, firmware and a dashboard, delivered as source files and documentation.
               </p>
               <TLink href="/contact" className="link mt-3 inline-block text-[0.9375rem] font-medium">
-                Start a project brief
+                Start a Project
               </TLink>
             </div>
           </div>

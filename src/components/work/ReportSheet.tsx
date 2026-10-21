@@ -1,5 +1,5 @@
 import { ViewTransition } from "react";
-import { LogoMark } from "@/components/site/Logo";
+import { Logo } from "@/components/site/Logo";
 import { TLink } from "@/components/site/TLink";
 import { MethodTag } from "@/components/ui/MethodTag";
 import type { Report } from "@/content/work";
@@ -7,12 +7,9 @@ import type { Report } from "@/content/work";
 export function ReportHead({ report }: { report: Report }) {
   return (
     <header className="report-head">
-      <div className="flex items-center gap-2.5">
-        <LogoMark size={24} />
-        <div className="leading-tight">
-          <p className="text-[0.8125rem] font-[650] [font-stretch:112%]">BuildIoT Labs</p>
-          <p className="text-[0.8125rem] text-ink-3">Test report</p>
-        </div>
+      <div className="flex items-center gap-3">
+        <Logo height={26} />
+        <p className="text-[0.8125rem] text-ink-3">Test report</p>
       </div>
       <p className="text-right font-mono text-[0.8125rem] leading-tight text-ink-2">
         {report.number}

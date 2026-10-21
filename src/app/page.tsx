@@ -1,7 +1,10 @@
 import { DesignCard } from "@/components/designs/DesignCard";
 import { Capabilities } from "@/components/home/Capabilities";
 import { Engagements } from "@/components/home/Engagements";
+import { Faq } from "@/components/home/Faq";
+import { Handover } from "@/components/home/Handover";
 import { Hero } from "@/components/home/Hero";
+import { Showcase } from "@/components/home/Showcase";
 import { ProcessTrace } from "@/components/home/ProcessTrace";
 import { NoteCard } from "@/components/notes/NoteCard";
 import { TLink } from "@/components/site/TLink";
@@ -9,29 +12,28 @@ import { SectionHead } from "@/components/ui/SectionHead";
 import { ReportSheet } from "@/components/work/ReportSheet";
 import { designs } from "@/content/designs";
 import { services } from "@/content/services";
-import { absoluteUrl, site } from "@/content/site";
+import { canonicalUrl, site } from "@/content/site";
 import { reports } from "@/content/work";
 import { allNotes } from "@/lib/notes";
 
 export const metadata = {
-  alternates: { canonical: absoluteUrl("/") },
+  alternates: { canonical: canonicalUrl("/") },
 };
 
 export default async function Home() {
   const notes = (await allNotes()).slice(0, 3);
   const featured = reports[0];
-  const coreServices = services.filter((s) => s.slug !== "products");
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
     name: site.name,
-    url: absoluteUrl("/"),
+    url: canonicalUrl("/"),
+    logo: canonicalUrl("/logo.png"),
     email: site.email,
     description: site.description,
-    areaServed: ["Bangladesh", "Worldwide"],
-    address: { "@type": "PostalAddress", addressLocality: "Dhaka", addressCountry: "BD" },
-    knowsAbout: ["Embedded firmware", "ESP32", "STM32", "FreeRTOS", "Low-power design", "MQTT", "IoT telemetry"],
+    slogan: site.motto,
+    knowsAbout: ["IoT hardware design", "PCB design", "Embedded firmware", "ESP32", "STM32", "MQTT", "IoT software and cloud"],
   };
 
   return (
@@ -43,15 +45,15 @@ export default async function Home() {
         <div className="wrap">
           <SectionHead
             id="build-title"
-            title="What we build"
-            intro="Four kinds of work, usually combined in one project. Each starts from the outcome you need."
+            title="What we engineer"
+            intro="Connected products need hardware, firmware and software that work together. We design the electronics, develop the embedded systems, build the supporting applications and document the handover."
           />
           <div className="mt-12 lg:mt-6">
-            <Capabilities items={coreServices} />
+            <Capabilities items={services} />
           </div>
           <p className="mt-6">
             <TLink href="/services" className="link font-medium">
-              All services, including end-to-end builds
+              All five services, with deliverables
             </TLink>
           </p>
         </div>
@@ -61,8 +63,8 @@ export default async function Home() {
         <div className="wrap">
           <SectionHead
             id="work-title"
-            title="From the lab"
-            intro="Client work, written up as test reports: the problem, what we built, and what we measured."
+            title="Selected engineering work"
+            intro="Projects written up as engineering reports: the problem, what we built, the evidence and its limits."
           />
           <div className="mt-12 grid gap-8 lg:grid-cols-12">
             <div className="min-w-0 lg:col-span-9">
@@ -71,8 +73,8 @@ export default async function Home() {
             <aside className="min-w-0 lg:col-span-3 lg:pt-6">
               <p className="text-[0.9375rem] leading-relaxed text-ink-2">
                 Numbers on a report carry a tag. <strong className="font-semibold text-ink">Measured</strong> means
-                the method is published. <strong className="font-semibold text-ink">Method note pending</strong> means
-                we have the number but haven&rsquo;t written up how it was taken yet.
+                the method is published. <strong className="font-semibold text-ink">Unverified</strong> means
+                we have the number but haven&rsquo;t published how it was taken, so don&rsquo;t rely on it.
               </p>
               <p className="mt-4">
                 <TLink href="/methods" className="link text-[0.9375rem] font-medium">
@@ -84,12 +86,25 @@ export default async function Home() {
         </div>
       </section>
 
+      <section aria-labelledby="showcase-title" className="py-20 lg:py-28">
+        <div className="wrap">
+          <SectionHead
+            id="showcase-title"
+            title="From board to dashboard"
+            intro="A connected product is a PCB, firmware and software working as one. These two panels are labelled illustrations; real, approved examples replace them as projects are cleared for publication."
+          />
+          <div className="mt-12">
+            <Showcase />
+          </div>
+        </div>
+      </section>
+
       <section aria-labelledby="designs-title" className="py-20 lg:py-28">
         <div className="wrap">
           <SectionHead
             id="designs-title"
             title="Reference designs"
-            intro="Small, documented builds you can copy: wiring, firmware outline, design notes, and a parts list stocked at our sister store."
+            intro="Internal R&D demonstrators, separate from client work: wiring, firmware outline, design notes and a parts list. Our calculators are in the Tools section."
           />
           <div className="mt-12 grid gap-12 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
             {designs.map((d) => (
@@ -128,6 +143,19 @@ export default async function Home() {
         </div>
       </section>
 
+      <section aria-labelledby="handover-title" className="py-20 lg:py-28">
+        <div className="wrap">
+          <SectionHead
+            id="handover-title"
+            title="Deliverables and ownership"
+            intro="You should be able to build, test and maintain the work without us in the room."
+          />
+          <div className="mt-12">
+            <Handover />
+          </div>
+        </div>
+      </section>
+
       <section aria-labelledby="notes-title" className="py-20 lg:py-28">
         <div className="wrap">
           <SectionHead
@@ -153,10 +181,19 @@ export default async function Home() {
           <SectionHead
             id="engage-title"
             title="Ways to work with us"
-            intro="Pick the shape that fits. We quote after reading your brief, in taka or US dollars."
+            intro="Pick the shape that fits. We quote after reading your brief, as a written proposal."
           />
           <div className="mt-12">
             <Engagements />
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="faq-title" className="pb-24 pt-4 lg:pb-32">
+        <div className="wrap">
+          <SectionHead id="faq-title" title="Common questions" intro="The short answers. The full list is on the FAQ page." />
+          <div className="mt-12">
+            <Faq />
           </div>
         </div>
       </section>

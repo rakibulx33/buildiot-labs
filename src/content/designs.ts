@@ -1,12 +1,7 @@
-import { site } from "./site";
-
-const store = (path: string) => `${site.store.url}${path}`;
-
 export type Part = {
   name: string;
   qty: number;
   role: string;
-  url: string;
   optional?: boolean;
 };
 
@@ -43,19 +38,18 @@ export const designs: Design[] = [
     statusNote: "Wiring and firmware outline written. Bench validation pending.",
     power: "A 5 V USB adapter. The node stays awake, so it is not a battery design.",
     parts: [
-      { name: "ESP32 DEVKIT V1", qty: 1, role: "Controller and Wi-Fi", url: store("/product/esp32-devkit-v1") },
-      { name: "Water Sensor", qty: 1, role: "Detects water on the floor", url: store("/product/water-sensor") },
-      { name: "Active Buzzer", qty: 1, role: "Local alarm", url: store("/product/active-buzzer") },
-      { name: "2N2222 NPN Transistor", qty: 1, role: "Drives the buzzer", url: store("/product/2n2222-npn-transistor") },
-      { name: "Resistor, 1 kΩ", qty: 1, role: "Transistor base", url: store("/category/discrete-components-and-ics") },
+      { name: "ESP32 DEVKIT V1", qty: 1, role: "Controller and Wi-Fi" },
+      { name: "Water Sensor", qty: 1, role: "Detects water on the floor" },
+      { name: "Active Buzzer", qty: 1, role: "Local alarm" },
+      { name: "2N2222 NPN Transistor", qty: 1, role: "Drives the buzzer" },
+      { name: "Resistor, 1 kΩ", qty: 1, role: "Transistor base" },
       {
         name: "Relay Module 2 Channel 5V",
         qty: 1,
         role: "Switches a valve or pump",
-        url: store("/product/2-channel-5v-relay-module-china"),
         optional: true,
       },
-      { name: "Breadboard 400 Point", qty: 1, role: "Bench assembly", url: store("/product/breadboard-400-point") },
+      { name: "Breadboard 400 Point", qty: 1, role: "Bench assembly" },
     ],
     pins: [
       { signal: "Water sensor S (analog out)", connect: "GPIO34", note: "ADC1 channel 6, which keeps working while Wi-Fi is on." },
@@ -111,26 +105,23 @@ export const designs: Design[] = [
     statusNote: "Wiring and firmware outline written. Bench validation pending.",
     power: "A 5 V USB adapter. The sensor's heater draws around 150 mA all the time, so this is not a battery design.",
     parts: [
-      { name: "ESP32 DEVKIT V1", qty: 1, role: "Controller and Wi-Fi", url: store("/product/esp32-devkit-v1") },
+      { name: "ESP32 DEVKIT V1", qty: 1, role: "Controller and Wi-Fi" },
       {
         name: "MQ2 Gas Sensor Module",
         qty: 1,
         role: "Detects LPG, methane and smoke",
-        url: store("/product/mq2-gas-sensor-module-methane-butane-lpg-smoke-gas-sensing"),
       },
       {
         name: "Resistors, 12 kΩ, 10 kΩ and 1 kΩ",
         qty: 3,
         role: "Sensor divider and transistor base",
-        url: store("/category/discrete-components-and-ics"),
       },
-      { name: "Active Buzzer", qty: 1, role: "Local alarm", url: store("/product/active-buzzer") },
-      { name: "2N2222 NPN Transistor", qty: 1, role: "Drives the buzzer", url: store("/product/2n2222-npn-transistor") },
+      { name: "Active Buzzer", qty: 1, role: "Local alarm" },
+      { name: "2N2222 NPN Transistor", qty: 1, role: "Drives the buzzer" },
       {
         name: "Relay Module 2 Channel 5V",
         qty: 1,
         role: "Exhaust fan control, for bench testing",
-        url: store("/product/2-channel-5v-relay-module-china"),
         optional: true,
       },
     ],
@@ -180,16 +171,15 @@ export const designs: Design[] = [
     statusNote: "Wiring and firmware outline written. Bench validation pending.",
     power: "From the battery being measured, through a fuse and an L7805 regulator.",
     parts: [
-      { name: "ESP32 DEVKIT V1", qty: 1, role: "Controller and Wi-Fi", url: store("/product/esp32-devkit-v1") },
-      { name: "Current Sensor ACS712 20A", qty: 1, role: "Measures DC current", url: store("/product/current-sensor-acs712-20a") },
-      { name: "L7805 Voltage Regulator", qty: 1, role: "12 V to 5 V supply", url: store("/product/l7805-voltage-regulator") },
+      { name: "ESP32 DEVKIT V1", qty: 1, role: "Controller and Wi-Fi" },
+      { name: "Current Sensor ACS712 20A", qty: 1, role: "Measures DC current" },
+      { name: "L7805 Voltage Regulator", qty: 1, role: "12 V to 5 V supply" },
       {
         name: "Resistors, 100 kΩ, 18 kΩ and 2 × 10 kΩ",
         qty: 4,
         role: "Battery and sensor dividers",
-        url: store("/category/discrete-components-and-ics"),
       },
-      { name: "Veroboard Double Sided 5x7cm", qty: 1, role: "Permanent assembly", url: store("/product/veroboard-double-sided-5x7-cm") },
+      { name: "Veroboard Double Sided 5x7cm", qty: 1, role: "Permanent assembly" },
     ],
     pins: [
       { signal: "Battery +", connect: "100 kΩ to GPIO33, 18 kΩ from GPIO33 to GND", note: "14.4 V reads as about 2.2 V; add 100 nF from GPIO33 to GND." },

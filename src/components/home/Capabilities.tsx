@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   FirmwarePlate,
+  PcbPlate,
   PowerPlate,
   PrototypePlate,
   TelemetryPlate,
@@ -11,21 +12,25 @@ import { TLink } from "@/components/site/TLink";
 import type { Service } from "@/content/services";
 
 const PLATES: Record<string, { plate: (p: { className?: string }) => ReactNode; caption: string }> = {
+  hardware: {
+    plate: PowerPlate,
+    caption: "A duty-cycled node: short, expensive wakes and long, cheap sleeps.",
+  },
+  pcb: {
+    plate: PcbPlate,
+    caption: "An illustrative board: footprints, routed copper, vias and edge pads.",
+  },
   firmware: {
     plate: FirmwarePlate,
     caption: "Tasks on a FreeRTOS timeline, with the watchdog fed at every checkpoint.",
   },
-  power: {
-    plate: PowerPlate,
-    caption: "A duty-cycled node: short, expensive wakes and long, cheap sleeps.",
-  },
-  telemetry: {
+  software: {
     plate: TelemetryPlate,
     caption: "Store and forward: readings queue on the node while the link is down.",
   },
-  prototypes: {
+  consulting: {
     plate: PrototypePlate,
-    caption: "An exploded prototype. Every layer is a stocked, documented part.",
+    caption: "An exploded prototype: enclosure, module, board and battery, each one documented.",
   },
 };
 
@@ -74,7 +79,7 @@ export function Capabilities({ items }: { items: Service[] }) {
                 <figure className="sheet mt-8 p-4 sm:p-6 lg:hidden" data-active={active === i ? "" : undefined}>
                   <Plate />
                   <figcaption className="mt-3 text-sm text-ink-2">
-                    <span className="font-semibold text-ink [font-stretch:106%]">Fig. 2{"abcd"[i]}.</span>{" "}
+                    <span className="font-semibold text-ink [font-stretch:106%]">Fig. 2{"abcde"[i]}.</span>{" "}
                     {PLATES[s.slug].caption}
                   </figcaption>
                 </figure>
@@ -104,7 +109,7 @@ export function Capabilities({ items }: { items: Service[] }) {
               })}
             </div>
             <figcaption className="mt-4 flex items-baseline gap-2 text-sm text-ink-2">
-              <span className="shrink-0 font-semibold text-ink [font-stretch:106%]">Fig. 2{"abcd"[active]}.</span>
+              <span className="shrink-0 font-semibold text-ink [font-stretch:106%]">Fig. 2{"abcde"[active]}.</span>
               <span key={active} className="cap-caption">
                 {PLATES[items[active].slug]?.caption}
               </span>

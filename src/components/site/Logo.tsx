@@ -1,31 +1,29 @@
-type MarkProps = { size?: number; className?: string };
+import { withBase } from "@/content/site";
 
-/** A "b" routed as a copper trace on soldermask, ending in a test pad. */
-export function LogoMark({ size = 30, className }: MarkProps) {
+/**
+ * The official BuildIoT Lab logo, on its own (no extra wordmark).
+ * `height` is in px; the width follows the 250 × 70 artwork.
+ */
+export function Logo({ height = 40, className = "" }: { height?: number; className?: string }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 32 32" aria-hidden="true" className={className}>
-      <rect width="32" height="32" rx="6" fill="var(--color-mask)" />
-      <path
-        d="M11 9.5V25h6.5a4.5 4.5 0 0 0 4.5-4.5v-1a4.5 4.5 0 0 0-4.5-4.5H11"
-        fill="none"
-        stroke="var(--color-silk)"
-        strokeWidth="2.4"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <circle cx="11" cy="7.2" r="3.3" fill="var(--color-gold)" />
-      <circle cx="11" cy="7.2" r="1.2" fill="var(--color-mask)" />
-    </svg>
+    // eslint-disable-next-line @next/next/no-img-element -- static export, unoptimised images
+    <img
+      src={withBase("/logo.png")}
+      alt="BuildIoT Lab"
+      width={Math.round((height * 250) / 70)}
+      height={height}
+      decoding="async"
+      className={`block max-w-none ${className}`}
+      style={{ height, width: "auto" }}
+    />
   );
 }
 
-export function Wordmark({ className = "" }: { className?: string }) {
+/** The logo on a paper-coloured plate, for dark backgrounds where maroon artwork would vanish. */
+export function LogoPlate({ height = 34 }: { height?: number }) {
   return (
-    <span className={`inline-flex items-center gap-2.5 ${className}`}>
-      <LogoMark />
-      <span className="text-[1.0625rem] leading-none font-[650] tracking-[-0.01em] [font-stretch:118%]">
-        BuildIoT Labs
-      </span>
+    <span className="inline-flex rounded-[8px] bg-silk px-3 py-2">
+      <Logo height={height} />
     </span>
   );
 }

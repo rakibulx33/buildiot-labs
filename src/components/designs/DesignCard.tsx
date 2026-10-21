@@ -27,7 +27,7 @@ export function DesignCard({ design, headingLevel = 3 }: { design: Design; headi
       </H>
       <p className="mt-2 text-[0.9375rem] leading-relaxed text-ink-2">{design.summary}</p>
       <p className="mt-3 text-sm text-ink-3">
-        {parts} parts from BuildIoT BD{design.status === "draft" ? ", draft design" : ", bench validated"}
+        {parts} parts, reference design{design.status === "draft" ? ", draft" : ", bench validated"}
       </p>
     </article>
   );

@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import { ProcessTrace } from "@/components/home/ProcessTrace";
 import { TLink } from "@/components/site/TLink";
 import { PageHead } from "@/components/ui/PageHead";
-import { absoluteUrl } from "@/content/site";
+import { faqs } from "@/content/faq";
+import { steps } from "@/content/process";
+import { canonicalUrl } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "How a project runs",
-  description: "Brief, scope, build, test, hand over: how a BuildIoT Labs project runs and what you receive at each step.",
-  alternates: { canonical: absoluteUrl("/process/") },
+  description: "Brief, scope, build, test, hand over: how a BuildIoT Lab project runs, with the inputs, outputs and acceptance criteria for each step.",
+  alternates: { canonical: canonicalUrl("/process/") },
 };
 
 const SCOPE = [
@@ -19,29 +21,11 @@ const SCOPE = [
 ];
 
 const HANDOVER = [
-  "Source code in your repository, with build and flashing steps",
-  "Wiring diagrams and the bill of materials",
-  "The test report, with every method written down",
+  "Editable schematics and PCB files, when in scope",
+  "Firmware and application source code, with build and deployment instructions",
+  "Technical documentation and a bill of materials",
+  "The test results, with every method written down",
   "A walkthrough for your team",
-];
-
-const QUESTIONS = [
-  {
-    q: "Can you work on firmware someone else wrote?",
-    a: "Yes. A review is usually the right first step: we measure the problem, read the code and give you a ranked list of fixes before anyone rewrites anything.",
-  },
-  {
-    q: "Do you sign NDAs?",
-    a: "Yes, before you share anything sensitive. Mention it in your brief and we'll send ours, or sign yours.",
-  },
-  {
-    q: "Do you only work in Bangladesh?",
-    a: "No. We're in Dhaka and work with local clients in person and with clients abroad remotely. Hardware ships both ways.",
-  },
-  {
-    q: "What if the scope changes halfway?",
-    a: "We write the change down, with its effect on price and dates, and continue only when you agree. No surprises on the invoice.",
-  },
 ];
 
 export default function ProcessPage() {
@@ -55,6 +39,37 @@ export default function ProcessPage() {
         <div className="wrap grid lg:grid-cols-12">
           <div className="lg:col-span-8">
             <ProcessTrace />
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="accept-title" className="pb-20">
+        <div className="wrap">
+          <h2 id="accept-title" className="t-h2 border-t border-line pt-16">
+            Inputs, outputs and acceptance
+          </h2>
+          <div className="sheet mt-10 overflow-x-auto">
+            <table className="data-table">
+              <caption className="sr-only">What each step needs, produces and is accepted against</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Step</th>
+                  <th scope="col">We need</th>
+                  <th scope="col">You receive</th>
+                  <th scope="col">Accepted when</th>
+                </tr>
+              </thead>
+              <tbody>
+                {steps.map((st) => (
+                  <tr key={st.name}>
+                    <th scope="row">{st.name}</th>
+                    <td className="text-ink-2">{st.input}</td>
+                    <td className="text-ink-2">{st.youGet}</td>
+                    <td className="text-ink-2">{st.accept}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
@@ -93,7 +108,7 @@ export default function ProcessPage() {
             Questions people ask first
           </h2>
           <dl className="grid gap-8 lg:col-span-7 lg:col-start-6">
-            {QUESTIONS.map((x) => (
+            {faqs.slice(0, 4).map((x) => (
               <div key={x.q} className="border-t border-line pt-5">
                 <dt className="t-h4">{x.q}</dt>
                 <dd className="mt-2 text-[1.0625rem] leading-relaxed text-ink-2">{x.a}</dd>
@@ -101,9 +116,8 @@ export default function ProcessPage() {
             ))}
             <div className="border-t border-line pt-5">
               <p className="text-[1.0625rem] text-ink-2">
-                Something else?{" "}
-                <TLink href="/contact" className="link">
-                  Ask in your brief
+                <TLink href="/faq" className="link">
+                  All questions and answers
                 </TLink>
                 .
               </p>

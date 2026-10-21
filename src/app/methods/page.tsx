@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import { TLink } from "@/components/site/TLink";
 import { MethodTag } from "@/components/ui/MethodTag";
 import { PageHead } from "@/components/ui/PageHead";
-import { absoluteUrl, site } from "@/content/site";
+import { canonicalUrl, site } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "How we measure",
-  description: "What the Measured, Model and Method note pending tags on BuildIoT Labs numbers mean, and how we measure current on the bench.",
-  alternates: { canonical: absoluteUrl("/methods/") },
+  description: "What the Measured, Model and Method note pending tags on BuildIoT Lab numbers mean, and how we measure current on the bench.",
+  alternates: { canonical: canonicalUrl("/methods/") },
 };
 
 const KINDS = [
