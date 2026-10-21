@@ -29,7 +29,6 @@ The site is built and every page works. These items need the owners' input befor
 ## From the developer handoff (v1.1, 22 October 2026)
 
 - [ ] **Trademark and use check** for the motto "Engineering Ideas Into Reality." and the line "From Circuit to Cloud: Hardware, Firmware & Software Engineering." before permanent adoption.
-- [ ] **Logo files.** `public/logo.png` is the 250 px artwork supplied; send an SVG or a larger PNG for sharper display on large and high-density screens.
 - [ ] **Team profiles.** Names, roles and experience, only with each person's consent. The About page and home section currently list disciplines only.
 - [ ] **Real PCB renders, schematic excerpts and dashboard screenshots**, authorised and redacted, to replace the two labelled illustrations on the home page.
 - [ ] **HydroAlert figures (14 ms, 96.7%).** Shown as "Unverified". Publish device revision, setup, conditions, sample count, method and date, or remove them. Also confirm it may be labelled client work, and whether the client has approved publication.

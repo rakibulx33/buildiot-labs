@@ -74,7 +74,7 @@ export function Header() {
       </a>
       <div className="wrap flex h-full items-center gap-6">
         <TLink href="/" className="shrink-0 rounded-[6px]" aria-label="BuildIoT Lab, home">
-          <Logo height={42} />
+          <Logo height={50} />
         </TLink>
 
         <nav aria-label="Primary" className="ml-auto hidden lg:block">
