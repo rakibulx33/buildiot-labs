@@ -1,4 +1,4 @@
-import { primaryNav, secondaryNav, site } from "@/content/site";
+import { primaryNav, secondaryNav, site, withBase } from "@/content/site";
 import { BriefBand } from "./BriefBand";
 import { LogoPlate } from "./Logo";
 import { TLink } from "./TLink";
@@ -20,6 +20,17 @@ export function Footer() {
                 {site.email}
               </a>
             </p>
+            <p className="mt-6 text-sm font-semibold text-panel-muted [font-stretch:92%]">Sister company</p>
+            <a
+              className="footer-link mt-2 inline-flex items-center gap-3 text-[0.9375rem]"
+              href="https://rakibulx33.github.io/gikpik/"
+              target="_blank"
+              rel="noopener"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element -- static export, unoptimised images */}
+              <img src={withBase("/gikpik-mark.svg")} alt="" width={24} height={24} decoding="async" />
+              <span>Gikpik, a software and automation studio</span>
+            </a>
           </div>
 
           <nav aria-label="Footer" className="grid grid-cols-2 gap-8 md:col-span-4">
